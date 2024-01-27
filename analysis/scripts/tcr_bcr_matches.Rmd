@@ -1,0 +1,500 @@
+# Objective
+Here I will analyse the T and B cell clone datasets inferred from bulk RNA-Seq using miXCR. The main objective of this analysis is finding if the TCR & BCR clonotypes that I see in a tumour region can be observed in other tumour regions, even in distal locations such as the metastases. 
+
+# ANALYSIS
+## 1. Set-up and load annotation and clone data
+
+```{r setup, include=FALSE}
+rm(list = ls(all = TRUE))
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(results = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_knit$set(root.dir = file.path(here::here(), "new_samples")) # change accordingly
+knitr::opts_chunk$set(fig.path = file.path(here::here(), "new_samples", "analyses", "miXCR"))
+```
+
+```{r paths}
+# PATHS
+BASE <- here::here()
+META_DIR = file.path(BASE, "data", "meta")
+OUT_DIR = file.path(BASE, "analysis", "outputs")
+FIG_DIR = file.path(BASE, "analysis", "figures")
+RAW_DIR = file.path(BASE, "data", "raw")
+ANNOTATION_PATH <- file.path(META_DIR, "tx_annotation.tsv")
+TCR_CLONES_PATH <- file.path(RAW_DIR, "tumour_TCR_clones.RDS")
+TCR_CLONES_NORMALS_PATH <- file.path(RAW_DIR, "normal_TCR_clones.RDS")
+BCR_CLONES_PATH <- file.path(RAW_DIR, "tumour_BCR_clones.RDS")
+BCR_CLONES_NORMALS_PATH <- file.path(RAW_DIR, "normal_BCR_clones.RDS")
+```
+
+```{r}
+library(tidyverse)
+library(immunarch)
+library(pheatmap)
+library(lemon)
+library(ggpmisc)
+library(ggthemes)
+
+source(file.path(BASE, "src", "plotting_theme.R"))
+source(file.path(BASE, "src", "plotting_functions.R"))
+```
+
+```{r}
+annotation <- read_delim(ANNOTATION_PATH, delim = "\t")
+TCRClonotypes <- readRDS(TCR_CLONES_PATH)
+BCRClonotypes <- readRDS(BCR_CLONES_PATH)
+normalsTCRClonotypes <- readRDS(TCR_CLONES_NORMALS_PATH)
+normalsBCRClonotypes <- readRDS(BCR_CLONES_NORMALS_PATH)
+
+
+# exclude all the samples that corresponds to patients with one single sample analysed
+patients <- str_extract(names(TCRClonotypes$data), "K\\d{3}")
+filterPatients <- names(table(patients) > 1)
+keepSamples <- which(patients %in% filterPatients)
+TCRClonotypes <- list(data = TCRClonotypes$data[keepSamples], meta = TCRClonotypes$meta[keepSamples, ])
+names(TCRClonotypes$data) <- str_remove(names(TCRClonotypes$data), "R_") %>% str_remove("G_") %>% str_remove(".clonotypes.TCRA_TCRB") %>% 
+  str_remove("_r\\d") %>% str_replace("K328R19", "K328-R19")
+TCRClonotypes$meta$Sample <- names(TCRClonotypes$data)
+
+BCRClonotypes <- list(data = BCRClonotypes$data[keepSamples], meta = BCRClonotypes$meta[keepSamples, ])
+names(BCRClonotypes$data) <- str_remove(names(TCRClonotypes$data), "R_") %>% str_remove("G_") %>% str_remove(".clonotypes.IGK_IGL") %>% 
+  str_remove("_r\\d") %>% str_replace("K328R19", "K328-R19")
+BCRClonotypes$meta$Sample <- names(BCRClonotypes$data)
+```
+
+```{r functions}
+classify_clones <- function(samples, clonotypes){
+  # find all the possible pairs where to analyse the matches
+  pairs <- combn(samples, 2)
+  lClones <- lapply(1:ncol(pairs), function(indexPair){find_match_clones(pairs[,indexPair][1], pairs[,indexPair][2], clonotypes)})
+  names(lClones) <- paste0(pairs[1,], "|", pairs[2, ])
+  return(lClones)
+}
+
+
+# function to get subset of the dataframe in both samples with the 
+find_match_clones <- function(sampleID1, sampleID2, clonotypes){
+  clones_sample1 <- clonotypes$data[[sampleID1]]
+  clones_sample2 <- clonotypes$data[[sampleID2]]
+  common_clones <- dplyr::intersect(clones_sample1$CDR3.nt, clones_sample2$CDR3.nt)
+  shared_clones_sample1 <- clones_sample1[clones_sample1$CDR3.nt %in% common_clones, c("Proportion", "CDR3.nt")]
+  colnames(shared_clones_sample1) <- c(paste0(sampleID1, "_proportion"), "CDR3.nt")
+  shared_clones_sample2 <- clones_sample2[clones_sample2$CDR3.nt %in% common_clones, c("Proportion", "CDR3.nt")]
+  colnames(shared_clones_sample2) <- c(paste0(sampleID2, "_proportion"), "CDR3.nt")
+  private_clones_sample1 <- clones_sample1[! clones_sample1$CDR3.nt %in% common_clones, c("Proportion", "CDR3.nt")]
+  colnames(private_clones_sample1) <- c("Proportion", "CDR3.nt")
+  private_clones_sample2 <- clones_sample2[! clones_sample2$CDR3.nt %in% common_clones, c("Proportion", "CDR3.nt")]
+  colnames(private_clones_sample2) <- c("Proportion", "CDR3.nt")
+  return(list(shared_clones = merge(shared_clones_sample1, shared_clones_sample2, by = "CDR3.nt"), 
+              private_clones = rbind(private_clones_sample1, private_clones_sample2)))
+}
+
+is_same_pt <- function(sample_pair_names){
+  str_extract_all(sample_pair_names, "K[^_-]*") %>% # what goes after K and before _ or - is patient ID
+    {unlist(lapply(., function(thisPair) length(unique(thisPair)) == 1))} # check if the values are the same with unique(thisPair) == 1
+}
+```
+
+## 2. Analysis of conserved T and B cells in different tumour regions
+
+### TCR
+```{r TCR}
+# compute the total number of matching clones
+sharedTCRMat <- immunarch::repOverlap(TCRClonotypes$data, .method = "public")
+# arrange samples of the same patient together
+sharedTCRMat <- sharedTCRMat[sort(rownames(sharedTCRMat)), sort(colnames(sharedTCRMat))]
+png(filename = file.path(FIG_DIR, "sharedTCR_heatmap.png"), width = 80, height = 80, units = "mm", res = 400)
+pheatmap(sharedTCRMat, cluster_rows = FALSE, cluster_cols = FALSE, show_colnames = FALSE, show_rownames = FALSE, color = hcl.colors(4, "Blues"), breaks = c(0, 1, 15, max(sharedTCRMat, na.rm = TRUE)), legend = FALSE)
+dev.off()
+```
+
+We can clearly see that the TCR clones that have the same sequence are usually found in the same patient. Let's corroborate this observation
+
+```{r}
+lTCRClones <- classify_clones(names(TCRClonotypes$data), TCRClonotypes)
+unspecificTCRShared <- c()
+numberUnspecificPairs <- 0
+specificTCRShared <- c()
+numberSpecificPairs <- 0
+
+for (thisPair in 1:length(lTCRClones)){
+  if (str_detect(names(lTCRClones)[thisPair], "M|LN|T")){
+    next()
+  }
+  if (nrow(lTCRClones[[thisPair]]$shared_clones)>0){
+    if(! is_same_pt(names(lTCRClones)[thisPair])){
+      unspecificTCRShared <- c(unspecificTCRShared, lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+      numberUnspecificPairs <- numberUnspecificPairs + 1
+    } else {
+      specificTCRShared <- c(specificTCRShared, lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+      numberSpecificPairs <- numberSpecificPairs + 1
+    }
+  }
+}
+```
+
+```{r}
+nSpecificPairsPrimPrim_tcr = numberSpecificPairs
+nPrimPrim_same_pat_pairs = sum(sapply(1:length(lTCRClones), function (thisPair){
+  is_same_pt(names(lTCRClones[thisPair])) & 
+    !str_detect(names(lTCRClones)[thisPair], "M|LN|T")
+}))
+
+nUnspecificPairsPrimPrim_tcr = numberUnspecificPairs
+nPrimPrim_diff_pat_pairs = sum(sapply(1:length(lTCRClones), function (thisPair){
+  !is_same_pt(names(lTCRClones[thisPair])) & 
+    !str_detect(names(lTCRClones)[thisPair], "M|LN|T")
+}))
+```
+
+1063 different TCR clones overlapping in 204 / 262 pairs of primary sample pairs from the same patient that share at least one TCR clone. 115 different TCR clones overlapping in 72 / 19838 pairs of primary sample pairs that share at least one TCR clone. 
+
+
+```{r}
+unspecificTCRSharedMets <- c()
+numberUnspecificPairsMets <- 0
+specificTCRSharedMets <- c()
+numberSpecificPairsMets <- 0
+props = data.frame(s1 = c(), s2 = c(), prop_s1 = c(), prop_s2 = c(), clone = c())
+for (thisPair in 1:length(lTCRClones)){
+  if (str_detect(names(lTCRClones)[thisPair], "M|LN|T") & str_detect(names(lTCRClones)[thisPair], "R")){
+    if (nrow(lTCRClones[[thisPair]]$shared_clones)>0){
+      if(! is_same_pt(names(lTCRClones)[thisPair])){
+        unspecificTCRSharedMets <- c(unspecificTCRSharedMets, lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        numberUnspecificPairsMets <- numberUnspecificPairsMets + 1
+      } else {
+        specificTCRSharedMets <- c(specificTCRSharedMets, lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        df = lTCRClones[[thisPair]]$shared_clones
+        s1 = colnames(df)[ncol(df) - 1]
+        s2 = colnames(df)[ncol(df)]
+        prop_s1 = as_vector(df[,ncol(df) - 1])
+        prop_s2 = as_vector(df[,ncol(df)])
+        clone = df$CDR3.nt
+        props = rbind(props, data.frame(s1 = s1, s2 = s2, prop_s1 = prop_s1, prop_s2 = prop_s2, clone = clone))
+        numberSpecificPairsMets <- numberSpecificPairsMets + 1
+      }
+    }
+  }
+}
+```
+
+
+```{r}
+nSpecificPairsPrimMet_tcr = numberSpecificPairsMets
+nPrimMet_same_pat_pairs = sum(sapply(1:length(lTCRClones), function (thisPair){
+  is_same_pt(names(lTCRClones[thisPair])) & 
+    str_detect(names(lTCRClones)[thisPair], "M|LN|T") &
+    str_detect(names(lTCRClones)[thisPair], "R")
+}))
+
+nUnspecificPairsPrimMet_tcr = numberUnspecificPairsMets
+nPrimMet_diff_pat_pairs = sum(sapply(1:length(lTCRClones), function (thisPair){
+  !is_same_pt(names(lTCRClones[thisPair]))
+  str_detect(names(lTCRClones)[thisPair], "M|LN|T") &
+    str_detect(names(lTCRClones)[thisPair], "R")
+}))
+```
+
+When we consider pairs that include one region in the primary tumour and another region in a metastasis, lymph node or thrombus, we find 356 TCR clones in 50 / 73 different primary metastasis pairs that share at least one TCR clone. 107 TCR clones shared in 40 / 5982 primary metastasis pairs from different patients. 
+
+```{r}
+names(normalsTCRClonotypes$data) <- paste0(str_sub(names(normalsTCRClonotypes$data), 3, 6), "-N")
+names(normalsBCRClonotypes$data) <- paste0(str_sub(names(normalsBCRClonotypes$data), 3, 6), "-N")
+tumNormal.TCRClonotypes <- list(data = c(TCRClonotypes$data[str_sub(names(TCRClonotypes$data), 1, 4) %in% str_sub(names(normalsTCRClonotypes$data), 1, 4)],
+                                         normalsTCRClonotypes$data))
+tumNormal.BCRClonotypes <- list(data = c(BCRClonotypes$data[str_sub(names(BCRClonotypes$data), 1, 4) %in% str_sub(names(normalsBCRClonotypes$data), 1, 4)],
+                                         normalsBCRClonotypes$data))
+```
+
+
+```{r}
+tumNormal.lTCRClones <- classify_clones(names(tumNormal.TCRClonotypes$data), tumNormal.TCRClonotypes)
+```
+
+```{r}
+unspecificTCRSharedNormalTumour <- c()
+nUnspecificTCRSharedNormalTumour <- c()
+numberUnspecificPairsNormalTumour <- 0
+specificTCRSharedNormalTumour <- c()
+nSpecificTCRSharedNormalTumour <- c()
+numberSpecificPairsNormalTumour <- 0
+unspecificTCRSharedTumourTumour <- c()
+nUnspecificTCRSharedTumourTumour <- c()
+numberUnspecificPairsTumourTumour <- 0
+specificTCRSharedTumourTumour <- c()
+nSpecificTCRSharedTumourTumour <- c()
+numberSpecificPairsTumourTumour <- 0
+
+for (thisPair in 1:length(tumNormal.lTCRClones)){
+  if (str_detect(names(tumNormal.lTCRClones)[thisPair], "M|LN|T|R") & str_detect(names(tumNormal.lTCRClones)[thisPair], "-N")){
+    if (nrow(tumNormal.lTCRClones[[thisPair]]$shared_clones)>0){
+      if(! is_same_pt(names(tumNormal.lTCRClones)[thisPair])){
+        unspecificTCRSharedNormalTumour <- c(unspecificTCRSharedNormalTumour, tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nUnspecificTCRSharedNormalTumour <- c(nUnspecificTCRSharedNormalTumour, length(tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberUnspecificPairsNormalTumour <- numberUnspecificPairsNormalTumour + 1
+      } else {
+        specificTCRSharedNormalTumour <- c(specificTCRSharedNormalTumour, tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nSpecificTCRSharedNormalTumour <- c(nSpecificTCRSharedNormalTumour, length(tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberSpecificPairsNormalTumour <- numberSpecificPairsNormalTumour + 1
+      }
+    } 
+  } 
+  else 
+  {
+    if (nrow(tumNormal.lTCRClones[[thisPair]]$shared_clones)>0){
+      if(! is_same_pt(names(tumNormal.lTCRClones)[thisPair])){
+        unspecificTCRSharedTumourTumour <- c(unspecificTCRSharedTumourTumour, tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nUnspecificTCRSharedTumourTumour <- c(nUnspecificTCRSharedTumourTumour, length(tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberUnspecificPairsTumourTumour <- numberUnspecificPairsTumourTumour + 1
+      } else {
+        specificTCRSharedTumourTumour <- c(specificTCRSharedTumourTumour, tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nSpecificTCRSharedTumourTumour <- c(nSpecificTCRSharedTumourTumour, length(tumNormal.lTCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberSpecificPairsTumourTumour <- numberSpecificPairsTumourTumour + 1
+      }
+    }
+  }
+}
+
+nPairsNormalTumSamePat <- sum(unlist(lapply(1:length(tumNormal.lTCRClones), function(thisPair) is_same_pt(names(tumNormal.lTCRClones)[thisPair]) & str_detect(names(tumNormal.lTCRClones)[thisPair], "M|LN|T|R") & str_detect(names(tumNormal.lTCRClones)[thisPair], "-N"))))
+nPairsNormalTumDiffPat <- sum(unlist(lapply(1:length(tumNormal.lTCRClones), function(thisPair) ! is_same_pt(names(tumNormal.lTCRClones)[thisPair]) & str_detect(names(tumNormal.lTCRClones)[thisPair], "M|LN|T|R") & str_detect(names(tumNormal.lTCRClones)[thisPair], "-N"))))
+nPairsTumTumDiffPat <- sum(unlist(lapply(1:length(tumNormal.lTCRClones), function(thisPair) ! is_same_pt(names(tumNormal.lTCRClones)[thisPair]) & str_detect(names(tumNormal.lTCRClones)[thisPair], "M|LN|T|R") & ! str_detect(names(tumNormal.lTCRClones)[thisPair], "-N"))))
+nPairsTumTumSamePat <- sum(unlist(lapply(1:length(tumNormal.lTCRClones), function(thisPair) is_same_pt(names(tumNormal.lTCRClones)[thisPair]) & str_detect(names(tumNormal.lTCRClones)[thisPair], "M|LN|T|R") & ! str_detect(names(tumNormal.lTCRClones)[thisPair], "-N"))))
+```
+
+```{r}
+nSpecificPairsNormalPrim_tcr = numberSpecificPairsNormalTumour
+nPrimNorm_same_pat_pairs = nPairsNormalTumSamePat
+nUnspecificPairsNormalPrim_tcr = numberUnspecificPairsNormalTumour
+nPrimMet_diff_pat_pairs = nPairsNormalTumDiffPat
+```
+
+```{r}
+tab = matrix(c(nSpecificPairsNormalPrim_tcr, nPrimNorm_same_pat_pairs, 
+         nSpecificPairsPrimPrim_tcr, nPrimPrim_same_pat_pairs,
+         nSpecificPairsPrimMet_tcr, nPrimMet_same_pat_pairs), nrow = 2, byrow = F)
+
+tab2 = tab
+tab2[,2] = tab2[,2] - tab[,1]
+fisher.test(tab2[,1:2]) # p-value shared TCR primary vs normal = 0.01
+fisher.test(tab2[,2:3]) # p-value shared TCR primary vs met = 0.29
+```
+
+
+```{r}
+samePatientProps <- data.frame(match_TCRs = c("At least 1", "No", "At least 1", "No", "At least 1", "No"), 
+                               pair_relationship = c("Primary - Normal", "Primary - Normal","Primary - Primary", "Primary - Primary", "Primary - Metastasis", "Primary - Metastasis"), 
+                               prop_pairs = c(nSpecificPairsNormalPrim_tcr / nPrimNorm_same_pat_pairs, 
+                                              (nPrimNorm_same_pat_pairs - nSpecificPairsNormalPrim_tcr) / nPrimNorm_same_pat_pairs, 
+                                              nSpecificPairsPrimPrim_tcr / nPrimPrim_same_pat_pairs, 
+                                              (nPrimPrim_same_pat_pairs - nSpecificPairsPrimPrim_tcr) / nPrimPrim_same_pat_pairs, 
+                                              nSpecificPairsPrimMet_tcr / nPrimMet_same_pat_pairs, 
+                                              (nPrimMet_same_pat_pairs -nSpecificPairsPrimMet_tcr)/nPrimMet_same_pat_pairs))
+
+p = ggplot(samePatientProps, aes(x = pair_relationship, y = prop_pairs, fill = match_TCRs))  +
+    geom_col() + 
+    scale_fill_manual(values = c("At least 1" = "#ADD8E6", "No" = "grey80")) +
+    labs(y = "Proportion", x = "") +
+  scale_x_discrete(limits = c("Primary - Primary", "Primary - Metastasis", "Primary - Normal")) + 
+    theme(axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 5),
+          axis.text.y = element_text(size = 5),
+          legend.position = "none")
+
+save_ggplot(p, file.path(FIG_DIR, "Fig6C_shared_tcr_prop"), w = 45, h = 35)
+```
+
+### BCR
+```{r BCR}
+# compute the total number of matching clones
+sharedBCRMat <- immunarch::repOverlap(BCRClonotypes$data, .method = "public")
+# arrange samples of the same patient together
+sharedBCRMat <- sharedBCRMat[sort(rownames(sharedBCRMat)), sort(colnames(sharedBCRMat))]
+png(filename = file.path(FIG_DIR, "sharedBCR_heatmap.png"), width = 80, height = 80, units = "mm", res = 400)
+pheatmap(sharedBCRMat, cluster_rows = FALSE, cluster_cols = FALSE, show_colnames = FALSE, show_rownames = FALSE, color = hcl.colors(4, "Blues"), breaks = c(0, 1, 15, max(sharedBCRMat, na.rm = TRUE)), legend = FALSE)
+dev.off()
+```
+
+We can clearly see that the BCR clones that have the same sequence are usually found in the same patient. Let's corroborate this observation
+
+```{r}
+lBCRClones <- classify_clones(names(BCRClonotypes$data), BCRClonotypes)
+unspecificBCRShared <- c()
+numberUnspecificPairs <- 0
+specificBCRShared <- c()
+numberSpecificPairs <- 0
+
+for (thisPair in 1:length(lBCRClones)){
+  if (str_detect(names(lBCRClones)[thisPair], "M|LN|T")){
+    next()
+  }
+  if (nrow(lBCRClones[[thisPair]]$shared_clones)>0){
+    if(! is_same_pt(names(lBCRClones)[thisPair])){
+      unspecificBCRShared <- c(unspecificBCRShared, lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+      numberUnspecificPairs <- numberUnspecificPairs + 1
+    } else {
+      specificBCRShared <- c(specificBCRShared, lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+      numberSpecificPairs <- numberSpecificPairs + 1
+    }
+  }
+}
+```
+
+```{r}
+nSpecificPairsPrimPrim_bcr = numberSpecificPairs
+nPrimPrim_same_pat_pairs = sum(sapply(1:length(lBCRClones), function (thisPair){
+  is_same_pt(names(lBCRClones[thisPair])) & 
+    !str_detect(names(lBCRClones)[thisPair], "M|LN|T")
+}))
+
+nUnspecificPairsPrimPrim_bcr = numberUnspecificPairs
+nPrimPrim_diff_pat_pairs = sum(sapply(1:length(lBCRClones), function (thisPair){
+  !is_same_pt(names(lBCRClones[thisPair])) & 
+    !str_detect(names(lBCRClones)[thisPair], "M|LN|T")
+}))
+```
+
+1063 different BCR clones overlapping in 240 / 262 pairs of primary sample pairs from the same patient that share at least one BCR clone. 115 different BCR clones overlapping in 14419 / 19838 pairs of primary sample pairs that share at least one BCR clone. 
+
+
+```{r}
+unspecificBCRSharedMets <- c()
+numberUnspecificPairsMets <- 0
+specificBCRSharedMets <- c()
+numberSpecificPairsMets <- 0
+props = data.frame(s1 = c(), s2 = c(), prop_s1 = c(), prop_s2 = c(), clone = c())
+for (thisPair in 1:length(lBCRClones)){
+  if (str_detect(names(lBCRClones)[thisPair], "M|LN|T") & str_detect(names(lBCRClones)[thisPair], "R")){
+    if (nrow(lBCRClones[[thisPair]]$shared_clones)>0){
+      if(! is_same_pt(names(lBCRClones)[thisPair])){
+        unspecificBCRSharedMets <- c(unspecificBCRSharedMets, lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        numberUnspecificPairsMets <- numberUnspecificPairsMets + 1
+      } else {
+        specificBCRSharedMets <- c(specificBCRSharedMets, lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        df = lBCRClones[[thisPair]]$shared_clones
+        s1 = colnames(df)[ncol(df) - 1]
+        s2 = colnames(df)[ncol(df)]
+        prop_s1 = as_vector(df[,ncol(df) - 1])
+        prop_s2 = as_vector(df[,ncol(df)])
+        clone = df$CDR3.nt
+        props = rbind(props, data.frame(s1 = s1, s2 = s2, prop_s1 = prop_s1, prop_s2 = prop_s2, clone = clone))
+        numberSpecificPairsMets <- numberSpecificPairsMets + 1
+      }
+    }
+  }
+}
+```
+
+
+```{r}
+nSpecificPairsPrimMet_bcr = numberSpecificPairsMets
+nPrimMet_same_pat_pairs = sum(sapply(1:length(lBCRClones), function (thisPair){
+  is_same_pt(names(lBCRClones[thisPair])) & 
+    str_detect(names(lBCRClones)[thisPair], "M|LN|T") &
+    str_detect(names(lBCRClones)[thisPair], "R")
+}))
+
+nUnspecificPairsPrimMet_bcr = numberUnspecificPairsMets
+nPrimMet_diff_pat_pairs = sum(sapply(1:length(lBCRClones), function (thisPair){
+  !is_same_pt(names(lBCRClones[thisPair]))
+  str_detect(names(lBCRClones)[thisPair], "M|LN|T") &
+    str_detect(names(lBCRClones)[thisPair], "R")
+}))
+```
+
+When we consider pairs that include one region in the primary tumour and another region in a metastasis, lymph node or thrombus, we find 356 BCR clones in 61 / 73 different primary metastasis pairs that share at least one BCR clone. 107 BCR clones shared in 4062 / 5982 primary metastasis pairs from different patients. 
+
+
+```{r}
+tumNormal.lBCRClones <- classify_clones(names(tumNormal.BCRClonotypes$data), tumNormal.BCRClonotypes)
+```
+
+```{r}
+unspecificBCRSharedNormalTumour <- c()
+nUnspecificBCRSharedNormalTumour <- c()
+numberUnspecificPairsNormalTumour <- 0
+specificBCRSharedNormalTumour <- c()
+nSpecificBCRSharedNormalTumour <- c()
+numberSpecificPairsNormalTumour <- 0
+unspecificBCRSharedTumourTumour <- c()
+nUnspecificBCRSharedTumourTumour <- c()
+numberUnspecificPairsTumourTumour <- 0
+specificBCRSharedTumourTumour <- c()
+nSpecificBCRSharedTumourTumour <- c()
+numberSpecificPairsTumourTumour <- 0
+
+for (thisPair in 1:length(tumNormal.lBCRClones)){
+  if (str_detect(names(tumNormal.lBCRClones)[thisPair], "M|LN|T|R") & str_detect(names(tumNormal.lBCRClones)[thisPair], "-N")){
+    if (nrow(tumNormal.lBCRClones[[thisPair]]$shared_clones)>0){
+      if(! is_same_pt(names(tumNormal.lBCRClones)[thisPair])){
+        unspecificBCRSharedNormalTumour <- c(unspecificBCRSharedNormalTumour, tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nUnspecificBCRSharedNormalTumour <- c(nUnspecificBCRSharedNormalTumour, length(tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberUnspecificPairsNormalTumour <- numberUnspecificPairsNormalTumour + 1
+      } else {
+        specificBCRSharedNormalTumour <- c(specificBCRSharedNormalTumour, tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nSpecificBCRSharedNormalTumour <- c(nSpecificBCRSharedNormalTumour, length(tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberSpecificPairsNormalTumour <- numberSpecificPairsNormalTumour + 1
+      }
+    } 
+  } 
+  else 
+  {
+    if (nrow(tumNormal.lBCRClones[[thisPair]]$shared_clones)>0){
+      if(! is_same_pt(names(tumNormal.lBCRClones)[thisPair])){
+        unspecificBCRSharedTumourTumour <- c(unspecificBCRSharedTumourTumour, tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nUnspecificBCRSharedTumourTumour <- c(nUnspecificBCRSharedTumourTumour, length(tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberUnspecificPairsTumourTumour <- numberUnspecificPairsTumourTumour + 1
+      } else {
+        specificBCRSharedTumourTumour <- c(specificBCRSharedTumourTumour, tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt)
+        nSpecificBCRSharedTumourTumour <- c(nSpecificBCRSharedTumourTumour, length(tumNormal.lBCRClones[[thisPair]]$shared_clones$CDR3.nt))
+        numberSpecificPairsTumourTumour <- numberSpecificPairsTumourTumour + 1
+      }
+    }
+  }
+}
+
+nPairsNormalTumSamePat <- sum(unlist(lapply(1:length(tumNormal.lBCRClones), function(thisPair) is_same_pt(names(tumNormal.lBCRClones)[thisPair]) & str_detect(names(tumNormal.lBCRClones)[thisPair], "M|LN|T|R") & str_detect(names(tumNormal.lBCRClones)[thisPair], "-N"))))
+nPairsNormalTumDiffPat <- sum(unlist(lapply(1:length(tumNormal.lBCRClones), function(thisPair) ! is_same_pt(names(tumNormal.lBCRClones)[thisPair]) & str_detect(names(tumNormal.lBCRClones)[thisPair], "M|LN|T|R") & str_detect(names(tumNormal.lBCRClones)[thisPair], "-N"))))
+nPairsTumTumDiffPat <- sum(unlist(lapply(1:length(tumNormal.lBCRClones), function(thisPair) ! is_same_pt(names(tumNormal.lBCRClones)[thisPair]) & str_detect(names(tumNormal.lBCRClones)[thisPair], "M|LN|T|R") & ! str_detect(names(tumNormal.lBCRClones)[thisPair], "-N"))))
+nPairsTumTumSamePat <- sum(unlist(lapply(1:length(tumNormal.lBCRClones), function(thisPair) is_same_pt(names(tumNormal.lBCRClones)[thisPair]) & str_detect(names(tumNormal.lBCRClones)[thisPair], "M|LN|T|R") & ! str_detect(names(tumNormal.lBCRClones)[thisPair], "-N"))))
+```
+
+```{r}
+nSpecificPairsNormalPrim_bcr = numberSpecificPairsNormalTumour
+nPrimNorm_same_pat_pairs = nPairsNormalTumSamePat
+nUnspecificPairsNormalPrim_bcr = numberUnspecificPairsNormalTumour
+nPrimMet_diff_pat_pairs = nPairsNormalTumDiffPat
+```
+
+```{r}
+tab = matrix(c(nSpecificPairsNormalPrim_bcr, nPrimNorm_same_pat_pairs, 
+               nSpecificPairsPrimPrim_bcr, nPrimPrim_same_pat_pairs,
+               nSpecificPairsPrimMet_bcr, nPrimMet_same_pat_pairs), nrow = 2, byrow = F)
+
+tab2 = tab
+tab2[,2] = tab2[,2] - tab[,1]
+fisher.test(tab2[,1:2]) # p-value shared BCR primary vs normal = 0.83
+fisher.test(tab2[,2:3]) # p-value shared BCR primary vs met = 0.62
+```
+
+
+```{r}
+samePatientProps <- data.frame(match_BCRs = c("At least 1", "No", "At least 1", "No", "At least 1", "No"), 
+                               pair_relationship = c("Primary - Normal", "Primary - Normal","Primary - Primary", "Primary - Primary", "Primary - Metastasis", "Primary - Metastasis"), 
+                               prop_pairs = c(nSpecificPairsNormalPrim_bcr / nPrimNorm_same_pat_pairs, 
+                                              (nPrimNorm_same_pat_pairs - nSpecificPairsNormalPrim_bcr) / nPrimNorm_same_pat_pairs, 
+                                              nSpecificPairsPrimPrim_bcr / nPrimPrim_same_pat_pairs, 
+                                              (nPrimPrim_same_pat_pairs - nSpecificPairsPrimPrim_bcr) / nPrimPrim_same_pat_pairs, 
+                                              nSpecificPairsPrimMet_bcr / nPrimMet_same_pat_pairs, 
+                                              (nPrimMet_same_pat_pairs -nSpecificPairsPrimMet_bcr)/nPrimMet_same_pat_pairs))
+
+p = ggplot(samePatientProps, aes(x = pair_relationship, y = prop_pairs, fill = match_BCRs))  +
+  geom_col() + 
+  scale_fill_manual(values = c("At least 1" = "#ADD8E6", "No" = "grey80")) +
+  labs(y = "Proportion", x = "") +
+  scale_x_discrete(limits = c("Primary - Primary", "Primary - Metastasis", "Primary - Normal")) + 
+  theme(axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 5),
+        axis.text.y = element_text(size = 5),
+        legend.position = "none")
+
+save_ggplot(p, file.path(FIG_DIR, "SupFigX_shared_bcr_prop"), w = 45, h = 35)
+```

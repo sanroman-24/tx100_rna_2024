@@ -1,0 +1,11 @@
+Image	Name	Class	Parent	ROI	Centroid X µm	Centroid Y µm	Num Detections	Num Negative	Num Positive	Positive %	Num Positive per mm^2	Area µm^2	Perimeter µm
+K208_PR002_PGM1	Tissue_area	Tissue_area	Image	Geometry	3320.4	4526.2	170647	120933	49714	29.13	1734.4	28663533.2	36269.1
+K208_PR002_PGM1	Non-tumour tissue	Non-tumour tissue	Tissue_area	Geometry	4020.3	6452.5	9792	6791	3001	30.65	478.17	6276039.9	25460.9
+K208_PR002_PGM1	peri-tumoural_immune	peri-tumoural_immune	Non-tumour tissue	Geometry	3833.4	6193.5	5947	4434	1513	25.44	481.97	3139199.8	21420.6
+K208_PR002_PGM1	tumour_immune	tumour_immune	Image	Geometry	3124.2	3986.2	160855	114142	46713	29.04	2086.6	22387496.9	34920.5
+K208_PR002_PGM1	diffuse	diffuse	Image	Geometry	3124.2	3986.2	160855	114142	46713	29.04	2086.6	22387496.9	34920.5
+K208_PR004_PGM1	Tissue_area	Tissue_area	Image	Geometry	6793.8	6741.5	206688	125077	81611	39.49	1110.3	73502505.4	99279.2
+K208_PR004_PGM1	Fibrosis	Fibrosis	Tissue_area	Geometry	10021.5	3761.6	25869	14779	11090	42.87	407.39	27222361.6	38303.1
+K208_PR004_PGM1	peri-tumoural_immune	peri-tumoural_immune	Fibrosis	Geometry	9005.1	6269.6	4093	2215	1878	45.88	579.59	3240219.6	27953.4
+K208_PR004_PGM1	tumour_immune	tumour_immune	Image	Geometry	4895.3	8494.4	180819	110298	70521	39	1523.8	46280143.9	77168.1
+K208_PR004_PGM1	aggregates	aggregates	Image	Geometry	4895.3	8494.4	180819	110298	70521	39	1523.8	46280143.9	77168.1

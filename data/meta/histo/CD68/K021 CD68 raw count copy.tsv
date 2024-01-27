@@ -1,0 +1,12 @@
+Image	Name	Class	Parent	ROI	Centroid X µm	Centroid Y µm	Num Detections	Num Negative	Num Positive	Positive %	Num Positive per mm^2	Area µm^2	Perimeter µm
+K021_PR003_PGM1	Tissue_area	Tissue_area	Image	Geometry	5863.1	2661.5	300733	225652	75081	24.97	3628.3	20693270.7	27574.9
+K021_PR003_PGM1	Normal kidney	Normal kidney	Image	Geometry	4586.9	2793	163213	124843	38370	23.51	3707.3	10349947	32555.2
+K021_PR003_PGM1	peri-tumoural_immune	peri-tumoural_immune	Normal kidney	Geometry	6200.9	3502.2	79342	54670	24672	31.1	6022.5	4096661.2	25670.4
+K021_PR003_PGM1	tumour_immune	tumour_immune	Image	Geometry	7151.7	2557.2	137766	100912	36854	26.75	3536.8	10420017.9	25052
+K021_PR003_PGM1	aggregates	aggregates	Image	Geometry	7151.7	2557.2	137766	100912	36854	26.75	3536.8	10420017.9	25052
+K021_PR004_PGM1	Tissue_area	Tissue_area	Image	Polygon	5072.1	2867.8	72976	35556	37420	51.28	1742.6	21473555.6	24088.2
+K021_PR004_PGM1	Normal kidney	Normal kidney	Tissue_area	Geometry	1383.7	1317.8	11387	7530	3857	33.87	1781.4	2165132.1	9669.3
+K021_PR004_PGM1	tumour_immune	tumour_immune	Image	Geometry	5303	3044.2	51940	23208	28732	55.32	1798.3	15977115.3	43913.6
+K021_PR004_PGM1	Fibrosis	Fibrosis	Image	Geometry	6358.8	3026.8	9649	4818	4831	50.07	1449	3334095.1	21890.3
+K021_PR004_PGM1	peri-tumoural_immune	peri-tumoural_immune	Image	Geometry	5881.6	2879.5	11505	5938	5567	48.39	1481.6	3757335.8	24628.7
+K021_PR004_PGM1	aggregates	aggregates	Image	Geometry	5303	3044.2	51940	23208	28732	55.32	1798.3	15977115.3	43913.6
