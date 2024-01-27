@@ -1,6 +1,0 @@
-GeneID
-IRF1
-IRF3
-IRF7
-TBK1
-

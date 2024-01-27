@@ -1,6 +1,0 @@
-Image	Name	Class	Parent	ROI	Centroid X µm	Centroid Y µm	Num Detections	Num Negative	Num Positive	Positive %	Num Positive per mm^2	Area µm^2	Perimeter µm
-K039_PR002_CD3	Tissue_area	Tissue_area	Image	Geometry	6912.2	3013	109685	65389	44296	40.38	1126.6	39317132.2	38402.5
-K039_PR002_CD3	Fibrosis	Fibrosis	Tissue_area	Geometry	7996	1878.9	8945	6088	2857	31.94	309.14	9241682.7	50607.4
-K039_PR002_CD3	tumour_immune	tumour_immune	Image	Geometry	6569.9	3364.1	100617	59250	41367	41.11	1378.9	30000622.4	64212.6
-K039_PR002_CD3	diffuse	diffuse	Image	Geometry	6569.9	3364.1	100617	59250	41367	41.11	1378.9	30000622.4	64212.6
-K039_PR002_CD3	peri-tumoural_immune	peri-tumoural_immune	Image	Geometry	7243.7	2327	7345	4949	2396	32.62	353.86	6771030.5	50443.2
