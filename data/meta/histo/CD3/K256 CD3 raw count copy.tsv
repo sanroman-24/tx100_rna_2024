@@ -1,0 +1,24 @@
+Image	Name	Class	Parent	ROI	Centroid X µm	Centroid Y µm	Num Detections	Num Negative	Num Positive	Positive %	Num Positive per mm^2	Area µm^2	Perimeter µm
+K256_PR011_CD3	Fibrosis	Fibrosis	Image	Polygon	1581	815.54	1868	1708	160	8.565	247.38	646776.3	3800.5
+K256_PR011_CD3	peri-tumoural_immune	peri-tumoural_immune	Fibrosis	Geometry	1526.6	862.67	1652	1499	153	9.262	291.36	525117.7	3970.7
+K256_PR011_CD3	hot spots	hot spots	Image	Geometry	840.11	2179.7	23097	19523	3574	15.47	1155.4	3093272.2	9602.8
+K256_PR011_CD3	tumour_immune	tumour_immune	Image	Geometry	840.11	2179.7	23097	19523	3574	15.47	1155.4	3093272.2	9602.8
+K256_PR011_CD3	Tissue_area	Tissue_area	Image	Geometry	968.22	1943.8	24965	21231	3734	14.96	998.38	3740048.6	11074
+K256_PR013_CD3	tumour_immune	tumour_immune	Image	Geometry	2169.8	3539.9	59354	53402	5952	10.03	862.56	6900353.4	30772.9
+K256_PR013_CD3	peri-tumoural_immune	peri-tumoural_immune	Image	Geometry	2433.8	5774.4	6800	5858	942	13.85	337.08	2794549.4	20856.6
+K256_PR013_CD3	Tissue_area	Tissue_area	Image	Geometry	2245.9	4184	66154	59260	6894	10.42	711.1	9694902.8	28083.8
+K256_PR013_CD3	aggregates	aggregates	Image	Geometry	2169.8	3539.9	59354	53402	5952	10.03	862.56	6900353.4	30772.9
+K256_PR013_CD3	Fibrosis	Fibrosis	Image	Geometry	2433.8	5774.4	6800	5858	942	13.85	337.08	2794549.4	20856.6
+K256_PR014_CD3	Tissue_area	Tissue_area	Image	Geometry	1405.3	2054.1	74724	64004	10720	14.35	2095.9	5114778.4	9386.7
+K256_PR014_CD3	tumour_immune	tumour_immune	Image	Geometry	1405.3	2054.1	74724	64004	10720	14.35	2095.9	5114778.4	9386.7
+K256_PR014_CD3	aggregates	aggregates	Image	Geometry	1405.3	2054.1	74724	64004	10720	14.35	2095.9	5114778.4	9386.7
+K256_PR015_CD3	tumour_immune	tumour_immune	Image	Polygon	1439.9	2305.5	41467	35388	6079	14.66	1232.6	4931689.4	12910.2
+K256_PR015_CD3	Fibrosis	Fibrosis	Image	Polygon	2356.1	1382.4	5534	4060	1474	26.64	1195.9	1232584.1	7109.1
+K256_PR015_CD3	peri-tumoural_immune	peri-tumoural_immune	Fibrosis	Polygon	2346.5	1395.4	5360	3918	1442	26.9	1214	1187835.3	7351.3
+K256_PR015_CD3	Tissue_area	Tissue_area	Image	Polygon	1623.1	2120.9	47001	39448	7553	16.07	1225.3	6164273.6	12134.6
+K256_PR015_CD3	aggregates	aggregates	Image	Polygon	1439.9	2305.5	41467	35388	6079	14.66	1232.6	4931689.4	12910.2
+K256_PR016_CD3	Tissue_area	Tissue_area	Image	Geometry	1490.8	2521.3	79226	61743	17483	22.07	2314.5	7553844.3	18624.3
+K256_PR016_CD3	Fibrosis	Fibrosis	Tissue_area	Polygon	1722.2	4198	8805	5974	2831	32.15	1457.5	1942384.7	8710
+K256_PR016_CD3	peri-tumoural_immune	peri-tumoural_immune	Fibrosis	Polygon	1441.9	3709.5	3151	1781	1370	43.48	1877.8	729565.4	5296.1
+K256_PR016_CD3	tumour_immune	tumour_immune	Image	Geometry	1410.8	1941	70421	55769	14652	20.81	2611.1	5611459.6	14836.4
+K256_PR016_CD3	hot spots	hot spots	Image	Geometry	1410.8	1941	70421	55769	14652	20.81	2611.1	5611459.6	14836.4
