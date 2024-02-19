@@ -51,7 +51,7 @@ met_label <- "METASTASIS"
 td_pairs <- get_ited_by_tissue(d_mat, annotation, "PRIMARY", met_label)
 p <- plot_paired_boxplot(td_pairs,
     cond1 = "ITH_prim_prim", cond2 = "ITH_prim_noprim",
-    ylab = "I-TED", xlab = "", ylim = c(0, 1)
+    ylab = "I-TED", xlab = "", ylim = c(0,1)
 )
 
 save_ggplot(p, file.path(FIG_DIR, "Fig3B_td_primprim_primmet"), w = 40, h = 40)

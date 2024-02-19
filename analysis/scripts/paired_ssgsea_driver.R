@@ -28,17 +28,7 @@ HALLMARK_GROUPS_PATH <- HALLMARK_GROUPS_PATH <- file.path(META_DIR, "martinez_ru
 # FUNCTIONS ---------------------------------------------------------------
 source(file.path(BASE, "src", "plotting_theme.R"))
 source(file.path(BASE, "src", "plotting_functions.R"))
-
-find_subclonal_alteration <- function(df, gene) {
-    tab <- df %>%
-        group_by(Patient) %>%
-        summarise(
-            n_wt = sum(!!sym(gene) == 0),
-            n_mt = sum(!!sym(gene) > 0)
-        )
-    pts_subclonal <- tab[tab$n_wt > 0 & tab$n_mt > 0, ]
-    return(df[df$Patient %in% pts_subclonal$Patient, ])
-}
+source(file.path(BASE, "src", "utils.R"))
 
 pair_comparison <- function(df, pth_str, gene) {
     df[[gene]] <- ifelse(df[[gene]] == 0, "wt", "mt")

@@ -92,19 +92,64 @@ p <- ggplot(res_df, aes(x = pc, y = feature, fill = ifelse(padj < .05, -log10(pa
   geom_tile(size = .3) +
   scale_fill_gradient2(low = "blue", mid = "white", high = "firebrick", midpoint = 0, na.value = "white") +
   scale_y_discrete(limits = rev(c("Age", "Sex", "is_primary", "stage", "purity", "VHL", "BAP1", "SETD2", "PBRM1", "KDM5C", "MTOR", "wgii", "WGD", "loss_9p", "loss_14q"))) +
-  labs(x = "", y = "", fill = "-log10 FDR * sign(test)") +
-  theme(legend.position = "none")
-
-p <- change_axes(p)
-
-save_ggplot(p, file.path(OUT_DIR, "Fig2C_pca_lme_no_legend"), w = 50, h = 40)
-
-p <- ggplot(res_df, aes(x = pc, y = feature, fill = ifelse(padj < .05, -log10(padj) * sign(test), NA))) +
-  geom_tile(size = .3) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "firebrick", midpoint = 0, na.value = "white") +
-  scale_y_discrete(limits = rev(c("Age", "Sex", "is_primary", "stage", "purity", "VHL", "BAP1", "SETD2", "PBRM1", "KDM5C", "MTOR", "wgii", "WGD", "loss_9p", "loss_14q"))) +
   labs(x = "", y = "", fill = "-log10 FDR * sign(test)")
 
 p <- change_axes(p)
 
 save_ggplot(p, file.path(OUT_DIR, "Fig2C_pca_lme"), w = 50, h = 40)
+
+p <- p + theme(legend.position = "none")
+
+save_ggplot(p, file.path(OUT_DIR, "Fig2C_pca_lme_no_legend"), w = 50, h = 40)
+
+
+
+# RUN LME WITH MOTZER SIGNATURES --------------------------------------
+
+vars <- colnames(ssgsea)[str_detect(colnames(ssgsea), "motzer")]
+
+res_df <- data.frame(feature = c(), pc = c(), pval = c(), test = c())
+
+for (var in vars) {
+  for (pc in paste0("PC", 1:5)) {
+    # correction by tumour purity, unless we are testing purity itself
+    lme_res <- summary(run_lme(pc, c(var, "purity"), "Patient", pcs_annotated))
+    if (var == "purity") {
+      lme_res <- summary(run_lme(pc, "purity", "Patient", pcs_annotated))
+    }
+
+    pval <- lme_res$tTable[2, 5]
+    test <- lme_res$tTable[2, 4]
+    res_df <- rbind(res_df, data.frame(feature = var, pc = pc, pval = pval, test = test))
+  }
+}
+
+res_df$padj <- p.adjust(res_df$pval)
+
+res_df$feature <- str_replace_all(res_df$feature, "_", " ")
+res_df$feature <- str_to_title(res_df$feature)
+res_df$feature[res_df$feature == "Motzer Fao Ampk"] <-
+  "Motzer FAO AMPK"
+res_df$feature <- str_remove(res_df$feature, "Motzer")
+p <- ggplot(res_df, aes(
+  x = pc, y = feature,
+  fill = ifelse(padj < .05, -log10(padj) * sign(test), NA)
+)) +
+  geom_tile(size = .3) +
+  scale_fill_gradient2(
+    low = "blue", mid = "white", high = "firebrick",
+    midpoint = 0, na.value = "white"
+  ) +
+  labs(x = "", y = "", fill = "-log10 FDR * sign")
+
+p <- change_axes(p)
+
+save_ggplot(p, file.path(OUT_DIR, "SuppFig2_pca_lme_tr_lgd"),
+  w = 100, h = 100
+)
+
+p <- p + theme(legend.position = "none")
+
+save_ggplot(p, file.path(OUT_DIR, "SuppFig2_pca_lme_tr_nolgd"),
+  w = 70, h = 60
+)

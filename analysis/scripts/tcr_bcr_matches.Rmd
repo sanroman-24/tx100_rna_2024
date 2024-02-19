@@ -303,6 +303,27 @@ p = ggplot(samePatientProps, aes(x = pair_relationship, y = prop_pairs, fill = m
 save_ggplot(p, file.path(FIG_DIR, "Fig6C_shared_tcr_prop"), w = 45, h = 35)
 ```
 
+```{r clonality_shared_unique}
+allTCRClones <- data.table::rbindlist(TCRClonotypes$data)
+allTCRClones <- allTCRClones %>% as.data.frame() %>% mutate(Type = case_when(
+  CDR3.nt %in% specificTCRShared ~ "shared",
+  TRUE ~ "unique"
+))
+
+p = ggplot(allTCRClones, aes(x = Type, y = Proportion)) + 
+  geom_violin() +
+  geom_boxplot(alpha = 0.3, 
+               width = 0.1, outlier.shape = NA) + 
+    stat_summary(fun.y = mean, geom = "point", aes(ymax = ..y.., ymin = ..y..), col = "red", width = 0.5) + coord_flex_cart(bottom = brackets_horizontal(), left = capped_vertical("both")) + 
+  ylim(c(0,0.05)) + 
+  labs(x = "TCR shared in over 1 region") + 
+  ggpubr::stat_compare_means(size = 2)
+
+save_ggplot(p, file.path(FIG_DIR, "SupFig22_tcr_clonality_shared"), 
+            w = 45, h = 45)
+allTCRClones %>% group_by(Type) %>% summarise(mean(Proportion))
+```
+
 ### BCR
 ```{r BCR}
 # compute the total number of matching clones

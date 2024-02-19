@@ -44,6 +44,7 @@ all(annotation$sample == colnames(tme))
 d_mat <- get_dist_matrix(tme, rownames(tme), f = "cosine")
 write_rds(d_mat, file.path(OUT_DIR, "TME_dist_matrix.rds"))
 
+d_mat = read_rds(file.path(OUT_DIR, "TME_dist_matrix.rds"))
 # FILTER TO PATIENTS WITH MORE THAN 1 PRIMARY REGION SAMPLED
 
 annotation <- annotation %>%
@@ -66,6 +67,7 @@ tme <- tme[, colnames(tme) %in% keep_samples]
 d_mat <- get_dist_matrix(tme, rownames(tme), f = "cosine")
 write_rds(d_mat, file.path(OUT_DIR, "TME_dist_primary.rds"))
 
+d_mat = read_rds(file.path(OUT_DIR, "TME_dist_primary.rds"))
 # p = pheatmap(d_mat, cluster_rows = FALSE, cluster_cols = FALSE, show_rownames = FALSE, show_colnames = FALSE)
 # png(file.path(OUTPUT_PLOTS_DIR, "transcriptional_distance_matrix.png"), height = 100, width = 100, units = "mm", res = 300)
 # p

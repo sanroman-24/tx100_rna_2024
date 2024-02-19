@@ -25,12 +25,23 @@ get_perc_variation <- function(fm_str, df){
   return(af)
 }
 
+find_subclonal_alteration <- function(df, gene) {
+    tab <- df %>%
+        group_by(Patient) %>%
+        dplyr::summarise(
+            n_wt = sum(!!sym(gene) == 0),
+            n_mt = sum(!!sym(gene) > 0)
+        )
+    pts_subclonal <- tab[tab$n_wt > 0 & tab$n_mt > 0, ]
+    return(df[df$Patient %in% pts_subclonal$Patient, ])
+}
+
 df_to_ggpaired = function(df, pat_var, cond, var_str){
   df = df %>% 
   group_by(!!sym(pat_var), !!sym(cond)) %>% 
-    summarise(var = mean(!!sym(var_str)))
+    dplyr::summarise(var = mean(!!sym(var_str)))
   keep_pats = df[[pat_var]][duplicated(df[[pat_var]])]
   df = df[df[[pat_var]] %in% keep_pats, ] %>% 
-    pivot_wider(names_from = pat_terminal, values_from = var)
+    pivot_wider(names_from = cond, values_from = var)
   return(df)
 }

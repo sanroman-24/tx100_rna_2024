@@ -82,7 +82,7 @@ ssgsea <- left_join(ssgsea, clones_annotation, by = "clone_code") %>%
 ssgsea <- ssgsea[!is.na(ssgsea$pat_terminal), ]
 
 # make all the paired boxplots
-sapply(
+lp = lapply(
     colnames(ssgsea)[str_detect(colnames(ssgsea), "motzer")],
     function(sign) {
         df_to_ggpaired(
@@ -95,6 +95,20 @@ sapply(
             )
     }
 )
+
+# lp = lapply(
+#   colnames(ssgsea)[str_detect(colnames(ssgsea), "HALLMARK")],
+#   function(sign) {
+#     df_to_ggpaired(
+#       df = ssgsea, pat_var = "patient",
+#       cond = "pat_terminal", var_str = sign
+#     ) %>%
+#       plot_paired_boxplot(
+#         cond1 = "No terminal", cond2 = "Terminal",
+#         ylab = sign, xlab = "", ylim = c(NA)
+#       )
+#   }
+# )
 
 # Highlight Motzer T effector and Myeloid inflammation for Fig4D
 p = df_to_ggpaired(
@@ -118,6 +132,19 @@ p = df_to_ggpaired(
             )
 
 save_ggplot(p, file.path(FIG_DIR, "Fig5D_myeloid"), w = 45, h = 45)
+
+
+# Perform all the comparisons between MOTZER signature scores using LME
+
+hm_sigs <- colnames(ssgsea)[str_detect(colnames(ssgsea), "motzer")]
+ssgsea_difs_df <- data.frame(sig = c(), t_value = c(), p_value = c())
+for (sig in hm_sigs) {
+  form <- as.formula(paste0(sig, " ~ clonal_age"))
+  res <- coef(summary(lme(form, random = ~ 1 | patient, data = ssgsea)))
+  ssgsea_difs_df <- rbind(ssgsea_difs_df, data.frame(sig = sig, t_value = res[2, 4], p_value = res[2, 5]))
+}
+
+ssgsea_difs_df$p_adj <- p.adjust(ssgsea_difs_df$p_value)
 
 # Perform all the comparisons between HALLAMARK signature scores using LME
 

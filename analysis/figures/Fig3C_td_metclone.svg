@@ -141,7 +141,7 @@
 <polyline points='87.51,97.86 87.51,95.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <text x='48.61' y='102.70' text-anchor='middle' style='font-size: 5.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='58.34px' lengthAdjust='spacingAndGlyphs'>No metastasising clone</text>
 <text x='87.51' y='102.70' text-anchor='middle' style='font-size: 5.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='49.40px' lengthAdjust='spacingAndGlyphs'>Metastasising clone</text>
-<text x='68.06' y='109.60' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='45.98px' lengthAdjust='spacingAndGlyphs'>Clonal distance</text>
+<text x='68.06' y='109.60' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='44.03px' lengthAdjust='spacingAndGlyphs'>Primary region</text>
 <text transform='translate(7.36,49.01) rotate(-90)' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='71.22px' lengthAdjust='spacingAndGlyphs'>Transcriptional distance</text>
 </g>
 </svg>

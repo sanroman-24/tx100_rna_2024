@@ -7,6 +7,7 @@ rm(list = ls(all = TRUE))
 
 library(immunarch)
 library(tidyverse)
+library(dplyr)
 library(here)
 
 
@@ -53,7 +54,7 @@ annotation$sample <- str_replace(annotation$sample, "-", "_")
 # )
 # rownames(bcr_rep_similarity) <- colnames(bcr_rep_similarity)
 # saveRDS(bcr_rep_similarity, file.path(OUT_DIR, "bcr_repertoire_similarity.RDS"))
-bcr_sim = readRDS(file.path(OUT_DIR, "bcr_repertoire_similarity.RDS"))
+bcr_sim <- readRDS(file.path(OUT_DIR, "bcr_repertoire_similarity.RDS"))
 
 # tcr_rep_similarity <- immunarch::repOverlap(
 #     tcr_clonotypes$data,
@@ -74,74 +75,101 @@ bcr_sim = readRDS(file.path(OUT_DIR, "bcr_repertoire_similarity.RDS"))
 # )
 # rownames(tcr_rep_similarity) <- colnames(tcr_rep_similarity)
 # saveRDS(tcr_rep_similarity, file.path(OUT_DIR, "tcr_repertoire_similarity.RDS"))
-tcr_sim = readRDS(file.path(OUT_DIR, "tcr_repertoire_similarity.RDS"))
+tcr_sim <- readRDS(file.path(OUT_DIR, "tcr_repertoire_similarity.RDS"))
 
 
 # GET SUMMARY SIMILARITY PER PATIENT -------------------------------------------
 # consider only primary regions
-annotation <- annotation %>% 
+annotation <- annotation %>%
   filter(type_collapsed == "PRIMARY")
 
 # get samples with more than one tumour primary regions
-keep_patients <- annotation %>% 
-  dplyr::group_by(Patient) %>% 
-  summarise(n = n()) %>%
-  filter(n > 1) %>% dplyr::select(Patient) %>% as_vector() 
+keep_patients <- annotation %>%
+  dplyr::group_by(Patient) %>%
+  dplyr::summarise(n = n()) %>%
+  filter(n > 1) %>%
+  dplyr::select(Patient) %>%
+  as_vector()
 
 
-summary_sim = data.frame(patient = keep_patients)
+summary_sim <- data.frame(patient = keep_patients)
 
-summary_sim$tcr_min_sim = summarise_sim(tcr_sim, summary_sim$patient, "min")
-summary_sim$tcr_max_sim = summarise_sim(tcr_sim, summary_sim$patient, "max")
-summary_sim$tcr_median_sim = summarise_sim(tcr_sim, summary_sim$patient, "median")
+summary_sim$tcr_min_sim <- summarise_sim(tcr_sim, summary_sim$patient, "min")
+summary_sim$tcr_max_sim <- summarise_sim(tcr_sim, summary_sim$patient, "max")
+summary_sim$tcr_median_sim <- summarise_sim(tcr_sim, summary_sim$patient, "median")
 
-summary_sim$bcr_min_sim = summarise_sim(bcr_sim, summary_sim$patient, "min")
-summary_sim$bcr_max_sim = summarise_sim(bcr_sim, summary_sim$patient, "max")
-summary_sim$bcr_median_sim = summarise_sim(bcr_sim, summary_sim$patient, "median")
+summary_sim$bcr_min_sim <- summarise_sim(bcr_sim, summary_sim$patient, "min")
+summary_sim$bcr_max_sim <- summarise_sim(bcr_sim, summary_sim$patient, "max")
+summary_sim$bcr_median_sim <- summarise_sim(bcr_sim, summary_sim$patient, "median")
 
-tcr_sim_pairs = unlist(summarise_sim(tcr_sim, unname(keep_patients), "c"))
-bcr_sim_pairs = unlist(summarise_sim(bcr_sim, unname(keep_patients), "c"))
-sim_pairs_df = data.frame(pair_id = names(tcr_sim_pairs), 
-                          tcr_sim = unname(tcr_sim_pairs),
-                          bcr_sim = unname(bcr_sim_pairs))
-sim_pairs_df$patient = str_sub(sim_pairs_df$pair_id, 1, 4)
+tcr_sim_pairs <- unlist(summarise_sim(tcr_sim, unname(keep_patients), "c"))
+bcr_sim_pairs <- unlist(summarise_sim(bcr_sim, unname(keep_patients), "c"))
+sim_pairs_df <- data.frame(
+  pair_id = names(tcr_sim_pairs),
+  tcr_sim = unname(tcr_sim_pairs),
+  bcr_sim = unname(bcr_sim_pairs)
+)
+sim_pairs_df$patient <- str_sub(sim_pairs_df$pair_id, 1, 4)
 
-sim_pairs_df$patient = factor(sim_pairs_df$patient)
-sim_pairs_df = sim_pairs_df %>% mutate(patient_ord = fct_reorder(patient, tcr_sim))
+sim_pairs_df$patient <- factor(sim_pairs_df$patient)
+sim_pairs_df <- sim_pairs_df %>% mutate(patient_ord = fct_reorder(patient, tcr_sim))
 
 saveRDS(summary_sim, file.path(OUT_DIR, "summary_tcr_bcr_sim.rds"))
 
 # PLOT TCR SIMILARITY -----------------------------------------------------
 
-p = ggplot(sim_pairs_df, aes(x = patient_ord, y = tcr_sim)) +
-  geom_point(alpha = 0.3, col = "lightblue") 
+p <- ggplot(sim_pairs_df, aes(x = patient_ord, y = tcr_sim)) +
+  geom_point(alpha = 0.3, col = "lightblue")
 
-p = p + 
-  geom_point(data = summary_sim, aes(x = patient, y = tcr_max_sim), 
-  shape = 15, col = "orchid", alpha = 0.5) + 
-  geom_point(data = summary_sim, aes(x = patient, y = tcr_min_sim), 
-  shape = 15, col = "orchid", alpha = 0.5) + 
-  geom_point(data = summary_sim, aes(x = patient, y = tcr_median_sim), 
-  shape = 23, col = "black", fill = "blueviolet") + 
-  labs(x = "", y = "TCR Similarity") + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-  lemon::coord_capped_cart(bottom = 'both', left = 'both') 
+p <- p +
+  geom_point(
+    data = summary_sim, aes(x = patient, y = tcr_max_sim),
+    shape = 15, col = "orchid", alpha = 0.5
+  ) +
+  geom_point(
+    data = summary_sim, aes(x = patient, y = tcr_min_sim),
+    shape = 15, col = "orchid", alpha = 0.5
+  ) +
+  geom_point(
+    data = summary_sim, aes(x = patient, y = tcr_median_sim),
+    shape = 23, col = "black", fill = "blueviolet"
+  ) +
+  labs(x = "", y = "TCR Similarity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  lemon::coord_capped_cart(bottom = "both", left = "both")
 
 save_ggplot(p, file.path(PLOT_DIR, "Fig6A_TCR_sim_summary"), w = 180, h = 70)
 
 # PLOT BCR SIMILARITY -----------------------------------------------------
-p = ggplot(sim_pairs_df, aes(x = patient_ord, y = bcr_sim)) +
-  geom_point(alpha = 0.3, col = "lightblue") 
+p <- ggplot(sim_pairs_df, aes(x = patient_ord, y = bcr_sim)) +
+  geom_point(alpha = 0.3, col = "lightblue")
 
-p = p + 
-  geom_point(data = summary_sim, aes(x = patient, y = bcr_max_sim), 
-  shape = 15, col = "orchid", alpha = 0.5) + 
-  geom_point(data = summary_sim, aes(x = patient, y = bcr_min_sim), 
-  shape = 15, col = "orchid", alpha = 0.5) + 
-  geom_point(data = summary_sim, aes(x = patient, y = bcr_median_sim), 
-  shape = 23, col = "black", fill = "blueviolet") + 
-  labs(x = "", y = "BCR Similarity") + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))  + 
-  lemon::coord_capped_cart(bottom = 'both', left = 'both') 
+p <- p +
+  geom_point(
+    data = summary_sim, aes(x = patient, y = bcr_max_sim),
+    shape = 15, col = "orchid", alpha = 0.5
+  ) +
+  geom_point(
+    data = summary_sim, aes(x = patient, y = bcr_min_sim),
+    shape = 15, col = "orchid", alpha = 0.5
+  ) +
+  geom_point(
+    data = summary_sim, aes(x = patient, y = bcr_median_sim),
+    shape = 23, col = "black", fill = "blueviolet"
+  ) +
+  labs(x = "", y = "BCR Similarity") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  lemon::coord_capped_cart(bottom = "both", left = "both")
 
 save_ggplot(p, file.path(PLOT_DIR, "Fig6A_BCR_sim_summary"), w = 180, h = 70)
+
+# GET CORRELATION BETWEEN TCR / BCR ----------------------------------------
+
+p <- scatter_plot(
+  sim_pairs_df, "bcr_sim", "tcr_sim",
+  "TCR similarity", "BCR similarity"
+)
+
+p = p + geom_smooth(method = "lm") + ggpubr::stat_cor()
+
+save_ggplot(p, file.path(PLOT_DIR, "SuppFig19_BCR_TCR_sim_cor"), w = 70, h = 70)

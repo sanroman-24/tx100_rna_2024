@@ -3,6 +3,8 @@ library(tidyverse)
 library(lemon)
 library(survival)
 library(ggpubr)
+library(survminer)
+library(gridExtra)
 
 scatter_plot <- function(df, x_str, y_str, y_title, x_title, fill = NA) {
   if (is.na(fill)) {
@@ -45,7 +47,7 @@ violin_plot <- function(
     ) +
     scale_x_discrete(labels = labs_x) +
     ggpubr::stat_compare_means(size = 2) +
-    labs(x = "Clonal distance", y = "Transcriptional distance") +
+    labs(x = x_title, y = y_title) +
     theme(
       axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 5),
       axis.text.y = element_text(size = 5),
@@ -70,6 +72,21 @@ save_ggplot <- function(p, fp, w, h) {
   ggsave(paste0(fp, ".pdf"), p, width = w, height = h)
 }
 
+save_plist <- function(plist, fp, w, h, ncol) {
+  mm_to_inches <- 25.3
+  w <- w / mm_to_inches
+  h <- h / mm_to_inches
+  ggsave(paste0(fp, ".svg"), arrangeGrob(grobs = plist, ncol = ncol),
+    width = w, height = h, device = "svg"
+  )
+  ggsave(paste0(fp, ".png"), arrangeGrob(grobs = plist, ncol = ncol),
+    width = w, height = h, dpi = 400, device = "png"
+  )
+  ggsave(paste0(fp, ".pdf"), arrangeGrob(grobs = plist, ncol = ncol),
+    width = w, height = h
+  )
+}
+
 save_baseplot <- function(p, fp, w, h) {
   mm_to_inches <- 25.3
   w <- w / mm_to_inches
@@ -80,7 +97,10 @@ save_baseplot <- function(p, fp, w, h) {
   svg(paste0(fp, ".svg"), height = h, width = w)
   print(p)
   dev.off()
-  png(paste0(fp, ".png"), height = h, width = w)
+  png(paste0(fp, ".png"),
+    height = h, width = w,
+    units = "in", res = 400
+  )
   print(p)
   dev.off()
 }
@@ -114,7 +134,7 @@ plot_paired_boxplot <- function(df, cond1, cond2, ylab, xlab, ylim) {
     labs(y = ylab, x = xlab) + stat_compare_means(paired = TRUE, size = 2) +
     theme(legend.position = "none") +
     lemon::coord_capped_cart(bottom = "both", left = "bottom")
-  if (!is.na(ylim)) {
+  if (!any(is.na(ylim))) {
     p <- p + ylim(ylim)
   }
 
@@ -144,7 +164,6 @@ plot_tile <- function(df, x_str, y_str, fill_str, lgd) {
 plot_volcano <- function(
     df, x_str, y_str, fill_str,
     lab_str, alpha_str, lgd, xlim) {
-  
   p <- ggplot(df, aes_string(x = x_str, y = y_str, fill = fill_str)) +
     geom_point(aes_string(alpha = alpha_str), pch = 21) +
     ggrepel::geom_text_repel(
@@ -156,7 +175,8 @@ plot_volcano <- function(
     scale_alpha_manual(values = c("soft" = 0.2, "dark" = 1), guide = "none") +
     theme(
       axis.text.x = element_text(hjust = 0.5, vjust = 1, size = 5),
-      axis.text.y = element_text(size = 5)) +
+      axis.text.y = element_text(size = 5)
+    ) +
     theme(panel.border = element_blank(), axis.line = element_line()) +
     lemon::coord_capped_cart(bottom = "both", left = "bottom") +
     xlim(xlim)
@@ -164,7 +184,6 @@ plot_volcano <- function(
     p <- p + theme(legend.position = "none")
   }
   return(p)
-
 }
 
 

@@ -45,6 +45,7 @@ all(annotation$sample == colnames(vst))
 d_mat = get_dist_matrix(assay(vst), top500_genes, f = "dcor")
 write_rds(d_mat, file.path(OUT_DIR, "ITED_matrix.rds"))
 
+d_mat = read_rds(file.path(OUT_DIR, "ITED_matrix.rds"))
 # FILTER TO PATIENTS WITH MORE THAN 1 PRIMARY REGION SAMPLED
 
 annotation <- annotation %>% 
@@ -65,6 +66,7 @@ vst = assay(vst)
 d_mat = get_dist_matrix(vst, top500_genes, f = "dcor")
 write_rds(d_mat, file.path(OUT_DIR, "ITED_matrix_primary.rds"))
 
+d_mat = read_rds(file.path(OUT_DIR, "ITED_matrix_primary.rds"))
 # p = pheatmap(d_mat, cluster_rows = FALSE, cluster_cols = FALSE, show_rownames = FALSE, show_colnames = FALSE)
 # png(file.path(OUTPUT_PLOTS_DIR, "transcriptional_distance_matrix.png"), height = 100, width = 100, units = "mm", res = 300)
 # p

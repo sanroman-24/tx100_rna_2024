@@ -378,6 +378,6 @@
 <text x='162.66' y='116.93' text-anchor='middle' style='font-size: 5.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='3.18px' lengthAdjust='spacingAndGlyphs'>4</text>
 <text x='192.53' y='116.93' text-anchor='middle' style='font-size: 5.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='3.18px' lengthAdjust='spacingAndGlyphs'>5</text>
 <text x='117.86' y='123.83' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='45.98px' lengthAdjust='spacingAndGlyphs'>Clonal distance</text>
-<text transform='translate(7.36,56.12) rotate(-90)' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='71.22px' lengthAdjust='spacingAndGlyphs'>Transcriptional distance</text>
+<text transform='translate(7.36,56.12) rotate(-90)' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='41.23px' lengthAdjust='spacingAndGlyphs'>TCR similarity</text>
 </g>
 </svg>

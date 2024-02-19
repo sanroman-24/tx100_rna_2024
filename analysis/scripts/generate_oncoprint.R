@@ -32,6 +32,8 @@ get_n_subclonal <- function(annotation, driver) {
   return(n_subclonal)
 }
 
+source(file.path(BASE, "src", "plotting_functions.R"))
+source(file.path(BASE, "src", "plotting_theme.R"))
 # LOAD DATA ---------------------------------------------------------------
 
 annotation <- read_delim(ANNOTATION_PATH)
@@ -137,6 +139,13 @@ SampleType_col <- c(
   "Lymph node" = "mediumorchid2", "Thrombus" = "cyan2",
   "Renal met" = "gold3", "#N/A" = "grey60"
 )
+
+stage_col <- c(
+  "IV" = "#ff0000", "I" = "#ffff66",
+  "III" = "#ff9900", "II" = "#ffcc00",
+  "NA" = "grey60"
+)
+
 central_loc_col <- c(
   "Periphery" = "antiquewhite1", "Centre" = "coral3",
   "NA" = "grey50"
@@ -146,6 +155,7 @@ col_ha <- HeatmapAnnotation(
   `Tumour purity` = info_oncoprint$purity,
   `Tumour ploidy` = info_oncoprint$ploidy,
   `wGII` = info_oncoprint$wgii,
+  `stage` = info_oncoprint$stage,
   `Genetic ITH` = info_oncoprint$ITH,
   `Type of sample` = info_oncoprint$type_collapsed,
   `Sample location` = info_oncoprint$centre_location,
@@ -161,14 +171,14 @@ col_ha <- HeatmapAnnotation(
   col = list(
     `Tumour purity` = purity_col_fun, `Tumour ploidy` = ploidy_col_fun,
     `wGII` = wgii_col, `Genetic ITH` = ITH_col, `Type of sample` = SampleType_col,
-    `Sample location` = central_loc_col
+    `Sample location` = central_loc_col, `stage` = stage_col
   )
 )
 
 
 # Plot oncoprint and save it ----------------------------------------------
 
-pdf(file.path(OUT_DIR, "Fig1_tx_rna_oncoprint.pdf"), width = 16, height = 4.5)
+# pdf(file.path(OUT_DIR, "Fig1_tx_rna_oncoprint.pdf"), width = 16, height = 4.5)
 ht <- oncoPrint(alterations,
   alter_fun = alter_fun, col = col,
   top_annotation = NULL,
@@ -178,9 +188,12 @@ ht <- oncoPrint(alterations,
   bottom_annotation = col_ha,
   column_split = annotation$Patient
 )
-draw(ht, annotation_legend_side = "bottom")
-dev.off()
-
+ht <- draw(ht, annotation_legend_side = "bottom")
+# dev.off()
+save_baseplot(ht,
+  file.path(OUT_DIR, "Fig1_tx_rna_oncoprint"),
+  w = 16 * 25.4, h = 4.5 * 25.4
+)
 
 # ESTIMATE NUMBER PATIENTS WITH SUBCLONAL MUTATION ------------------------
 n_pats <- length(unique(annotation$Patient))

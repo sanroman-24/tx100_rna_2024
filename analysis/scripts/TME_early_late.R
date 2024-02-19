@@ -11,6 +11,7 @@ library(DESeq2)
 library(ggpubr)
 library(nlme)
 library(ggthemes)
+library(gridExtra)
 
 # PATHS -------------------------------------------------------------------
 
@@ -80,8 +81,11 @@ tme <- left_join(tme, clones_annotation, by = "clone_code") %>%
     }
 
 tme <- tme[!is.na(tme$pat_terminal), ]
+
+tme <- merge(tme, annotation, by = "sample")
+
 # make all the paired boxplots
-sapply(
+plist <- lapply(
     cells,
     function(cell) {
         df_to_ggpaired(
@@ -90,7 +94,29 @@ sapply(
         ) %>%
             plot_paired_boxplot(
                 cond1 = "No terminal", cond2 = "Terminal",
-                ylab = cell, xlab = "", ylim = c(NA)
+                ylab = str_replace_all(cell, "_", " "),
+                xlab = "", ylim = c(NA)
             )
     }
+)
+
+save_plist(plist,
+    fp = file.path(FIG_DIR, "SupFig14_TME_term_noterm"),
+    w = 275, h = 275, ncol = 4
+)
+
+# Compare also differences in purity
+p <- df_to_ggpaired(
+    df = tme, pat_var = "patient",
+    cond = "pat_terminal", var_str = "purity"
+) %>%
+    plot_paired_boxplot(
+        cond1 = "No terminal", cond2 = "Terminal",
+        ylab = "Tumour Purity",
+        xlab = "", ylim = c(NA)
+    )
+
+save_ggplot(p,
+    file.path(FIG_DIR, "SupFig15_pur_term_noterm"),
+    w = 75, h = 75
 )

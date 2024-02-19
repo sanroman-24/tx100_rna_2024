@@ -80,13 +80,36 @@ p <- violin_plot(
 save_ggplot(p, file.path(FIG_DIR, "Fig3C_td_metclone"), w = 40, h = 40)
 
 # Run LME to control for inclusion mulitple pairs from same patient
-run_lme(
+summary(run_lme(
   "t_d", "metastasising_clone", "Patient",
-  td_df[!is.na(td_df$clonal_dists), ]
-)
+  td_df
+))
+# Met clone more similar with p-val = 7e-04
 
 # LME with continuous clonal distance
-run_lme(
+summary(run_lme(
   "t_d", "clonal_dists", "Patient",
-  td_df[!is.na(td_df$clonal_dists), ]
+  td_df
+))
+
+# general higher distance with higher clonal distance
+# p-value = 0
+
+td_df$clonal_dists <- as.character(td_df$clonal_dists)
+
+p <- violin_plot(
+  df = td_df,
+  x_str = "clonal_dists",
+  y_str = "t_d", x_title = "Clonal distance",
+  labs_x = seq(
+    min(td_df$clonal_dists, na.rm = T),
+    max(td_df$clonal_dists, na.rm = T)
+  ),
+  y_title = "Transcriptional distance",
+  fun.y = "mean",
+  ylim = c(0, 1)
+)
+
+save_ggplot(p, file.path(FIG_DIR, "SupFig6_td_prim_met"),
+  w = 75, h = 45
 )

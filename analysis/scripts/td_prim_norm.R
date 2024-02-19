@@ -1,4 +1,4 @@
-# Compare I-TED between primary-primary and primary-met pairs in TRACERx Renal
+# Compare I-TED between primary-primary and primary-normal pairs in TRACERx Renal
 
 rm(list = ls(all = TRUE))
 
