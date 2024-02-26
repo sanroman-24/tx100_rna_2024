@@ -88,7 +88,7 @@ km_fit <- survfit(Surv(pfs_time, pfs) ~ group,
 
 km_plot <- plot_km(scores, km_fit, plt = plt)
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "SupFigX_9p_loss_prolif_pfs"),
+save_baseplot(km_plot, file.path(FIG_DIR, "SupFigX_9p_loss_prolif_pfs"),
     h = 90, w = 70
 )
 
@@ -99,7 +99,7 @@ km_fit <- survfit(Surv(os_time, os) ~ group,
 
 km_plot <- plot_km(scores, km_fit, plt = plt)
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "SupFigX_9p_loss_prolif_os"),
+save_baseplot(km_plot, file.path(FIG_DIR, "SupFigX_9p_loss_prolif_os"),
     h = 90, w = 70
 )
 

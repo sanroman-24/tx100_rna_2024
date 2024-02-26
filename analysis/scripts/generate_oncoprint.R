@@ -59,11 +59,6 @@ annotation$distance_to_boundary <- annotation$`distance to boundary (mm)`
 
 annotation$type_collapsed <- str_replace(str_to_title(annotation$type_collapsed), "_", " ")
 
-annotation <- annotation %>%
-  # 10mm is the threshold distance to categorise into "Periphery" and "Centre" in Zhao et al, Nature Ecology 2021
-  mutate(centre_location = ifelse(distance_to_boundary < 10, "Periphery", "Centre")) %>%
-  mutate(centre_location = ifelse(is.na(centre_location), "NA", centre_location))
-
 annotation$wgii <- as.numeric(annotation$wgii)
 annotation$ITH <- as.numeric(annotation$ITH)
 annotation$purity <- as.numeric(annotation$purity)
@@ -75,7 +70,7 @@ info_oncoprint <- annotation %>% dplyr::select(
   VHL, PBRM1, SETD2, BAP1,
   loss_3p, loss_9p, loss_14q,
   purity, ploidy, wgii, stage, ITH,
-  type_collapsed, centre_location
+  type_collapsed
 ) %>% # annotation OncoPrint
   dplyr::rename(Sample = sample)
 
@@ -92,7 +87,7 @@ oncoprint_mat <- oncoprint_mat[-c(1, 2), ]
 # gains and losses
 # for mutations:
 drivers <- oncoprint_mat[1:4, ]
-drivers[drivers == "3"] <- "mutation"
+drivers[drivers == "3"] <- "methylation"
 drivers[drivers == "2"] <- "mutation"
 drivers[drivers == "1"] <- "mutation"
 drivers[drivers == "0"] <- ""
@@ -107,8 +102,10 @@ alterations <- rbind(drivers, loss_cnv)
 # define the colors for each of the alterations
 col <- c(
   "mutation" = "sandybrown",
+  "methylation" = "lightgreen",
   "copy_number_loss" = "skyblue3"
 )
+
 # define function for transforming values of the matrix
 # into the actual oncoprint values
 alter_fun <- list(
@@ -120,6 +117,11 @@ alter_fun <- list(
   mutation = function(x, y, w, h) {
     grid.rect(x, y, w, h,
       gp = gpar(fill = col["mutation"], col = "white")
+    )
+  },
+  methylation = function(x, y, w, h) {
+    grid.rect(x, y, w, h,
+      gp = gpar(fill = col["methylation"], col = "white")
     )
   },
   copy_number_loss = function(x, y, w, h) {
@@ -146,10 +148,6 @@ stage_col <- c(
   "NA" = "grey60"
 )
 
-central_loc_col <- c(
-  "Periphery" = "antiquewhite1", "Centre" = "coral3",
-  "NA" = "grey50"
-)
 # create annotation for the oncoprint
 col_ha <- HeatmapAnnotation(
   `Tumour purity` = info_oncoprint$purity,
@@ -158,20 +156,18 @@ col_ha <- HeatmapAnnotation(
   `stage` = info_oncoprint$stage,
   `Genetic ITH` = info_oncoprint$ITH,
   `Type of sample` = info_oncoprint$type_collapsed,
-  `Sample location` = info_oncoprint$centre_location,
   annotation_legend_param = list(
     `Tumour purity` = list(direction = "horizontal"),
     `Tumour ploidy` = list(direction = "horizontal"),
     `wGII` = list(direction = "horizontal"),
     `Genetic ITH` = list(direction = "horizontal"),
-    `Type of sample` = list(direction = "horizontal"),
-    `Sample location` = list(direction = "horizontal")
+    `Type of sample` = list(direction = "horizontal")
   ),
   gp = gpar(col = "white"),
   col = list(
     `Tumour purity` = purity_col_fun, `Tumour ploidy` = ploidy_col_fun,
     `wGII` = wgii_col, `Genetic ITH` = ITH_col, `Type of sample` = SampleType_col,
-    `Sample location` = central_loc_col, `stage` = stage_col
+    `stage` = stage_col
   )
 )
 
