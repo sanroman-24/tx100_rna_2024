@@ -17,7 +17,7 @@ library(ggpubr)
 # PATHS -------------------------------------------------------------------
 
 BASE <- here::here()
-OUT_DIR <- file.path(BASE, "analysis")
+OUT_DIR <- file.path(BASE, "analysis", "figures")
 ANNOTATION_PATH <- file.path(BASE, "data", "meta", "tx_annotation.tsv")
 VST_PATH <- file.path(BASE, "data", "processed", "tum_vst_exp_filtered.rds")
 
@@ -144,3 +144,37 @@ quantile(b_ratios, .025)
 quantile(b_ratios, 0.975)
 mean(b_ratios)
 hist(b_ratios)
+
+# CHECK IF CLUSTERING MORE OFTEN THAN EXPECTED BY CHANCE --------
+dist_df$Patient <- str_remove(dist_df$s1, "[-_][A-Z0-9]+")
+
+closest <- dist_df %>%
+  dplyr::group_by(s1) %>%
+  slice_min(dist)
+
+ct_tb <- matrix(c(table(closest$same_pat), table(dist_df$same_pat)),
+  nrow = 2, byrow = T
+)
+
+# Closest sample in UMAP space is from the same patient more often
+# than expected --> p-value < 2.2e-16
+chisq.test(ct_tb)
+
+# 28.8x more often than expected
+o_fq <- ct_tb[1, 2] / sum(ct_tb[1, ])
+e_fq <- ct_tb[2, 2] / sum(ct_tb[2, ])
+o_fq / e_fq
+
+df <- data.frame(
+  same_patient = c("yes", "no", "yes", "no"),
+  t = c("observed", "observed", "expected", "expected"),
+  fq = c(o_fq, 1 - o_fq, e_fq, 1 - e_fq)
+)
+
+p <- ggplot(df, aes(x = t, fill = same_patient, y = fq)) +
+  geom_col() +
+  scale_fill_manual(values = c("yes" = "#ADD8E6", "no" = "grey80")) +
+  coord_capped_flip() +
+  theme(legend.position = "none")
+
+save_ggplot(p, file.path(OUT_DIR, "SupFig4_UMAP_clustering"), w = 60, h = 35)
