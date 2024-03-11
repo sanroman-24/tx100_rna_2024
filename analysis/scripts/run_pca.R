@@ -32,3 +32,11 @@ fviz_eig(tx_pca)
 res.pca <- summary(tx_pca)
 res.pca$importance[3, 5]
 # In particular, 43% of the total variance is explained by these 5 principal components
+
+# Variance explained by each one: 
+res.pca$importance[2,1:5]
+# 15.7% PC1
+# 9.78% PC2
+# 8.00% PC3
+# 5.52% PC4
+# 4.35% PC5
