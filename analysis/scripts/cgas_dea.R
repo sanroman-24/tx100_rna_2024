@@ -84,17 +84,18 @@ res <- res[rownames(res) %in% unlist(cGAS_STING_genes), ] %>%
         gene_name %in% bak_genes$CIN_NNKFB_Regulators_Bakhoum ~ "Bakhoum_NFKB_Regulators",
         gene_name %in% bak_genes$CIN_NonCanonical_NFKB_Bakhoum ~ "Bakhoum_NonCanonical_NFKB",
         gene_name %in% bak_genes$CIN_Signature_Bakhoum ~ "Bakhoum_CINSignature"
-    )) %>%
-    filter(gene_cat != "Bakhoum_CINSignature") %>%
-    mutate(
+    )) %>% filter(gene_cat != "Bakhoum_CINSignature")
+
+res$log_p <- -log10(res$padj)
+write_delim(res, file.path(OUT_DIR, "ST5_cGAS_dea.tsv"), delim = "\t")
+
+res <- res %>% mutate(
         gene_name =
             ifelse(gene_name %in% c(paste0("CXCL", 9:11), "SLC19A1", "ENPP1", "NFKB1"),
                 gene_name, ""
             )
     ) %>%
     mutate(alpha = ifelse(gene_name == "", "soft", "dark"))
-
-res$log_p <- -log10(res$padj)
 
 # plot the results into a Volcano Plot
 p <- plot_volcano(

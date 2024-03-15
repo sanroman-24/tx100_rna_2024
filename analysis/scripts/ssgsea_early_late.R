@@ -161,7 +161,7 @@ ssgsea_difs_df$p_adj <- p.adjust(ssgsea_difs_df$p_value)
 # collapse by gene groups
 ssgsea_difs_df$Hallmark <- str_remove(str_to_lower(ssgsea_difs_df$sig), "hallmark_")
 ssgsea_difs_df <- merge(ssgsea_difs_df, gene_groups, by = "Hallmark")
-write_delim(ssgsea_difs_df, file.path(OUT_DIR, "ssgsea_difs_early_late.tsv"), delim = "\t")
+write_delim(ssgsea_difs_df, file.path(OUT_DIR, "ST4_ssgsea_difs_early_late.tsv"), delim = "\t")
 
 ssgsea_difs_df <- ssgsea_difs_df %>%
     filter(Functional_group != "immune") %>% # we focus in next sections on TME

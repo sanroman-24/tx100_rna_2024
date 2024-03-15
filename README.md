@@ -48,9 +48,9 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | 2             | [analysis/scripts/lme_transcriptional_pc.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/lme_transcriptional_pc.R)|
 | Supplementary          | 3             | [analysis/scripts/lme_transcriptional_pc.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/lme_transcriptional_pc.R)|
 | Supplementary          | 4             | [analysis/scripts/umap.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/umap.R)|
-| Supplementary          | 5             | None, manually using graphical design software|
+| Supplementary          | 5             | None, manually using graphical design software. Mock scatter plots generated in [src/td_mock_example.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/src/td_mock_example.R)|
 | Supplementary          | 6             | [analysis/scripts/survival_transcriptional_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/survival_transcriptional_ited.R)|
-| Supplementary          | 7             | xx|
+| Supplementary          | 7             | [analysis/scripts/prim_norm_td_clonal.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/prim_norm_td_clonal.R)|
 | Supplementary          | 8             | None, manually using graphical design software|
 | Supplementary          | 9             | [analysis/scripts/td_vs_clonal_dist.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/td_vs_clonal_dist.R)|
 | Supplementary          | 10             | None, manually using graphical design software|
@@ -69,8 +69,8 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | 22             | [analysis/scripts/tcr_bcr_vs_clonal_dist.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/tcr_bcr_vs_clonal_dist.R)|
 | Supplementary          | 23             | [analysis/scripts/fig7_HERV_analysis.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/fig7_HERV_analysis.R)|
 | Supplementary          | 24             | [analysis/scripts/fig7_HERV_analysis.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/fig7_HERV_analysis.R)|
-| Supplementary          | Table 1        | xx|
-| Supplementary          | Table 2        | xx|
+| Supplementary          | Table 1        | [analysis/scripts/normal_prim_ssgsea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/normal_prim_ssgsea.R)|
+| Supplementary          | Table 1        | [analysis/scripts/prim_met_ssgsea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/prim_met_ssgsea.R)|
 | Supplementary          | Table 3        | [data/meta/martinez_ruiz_2023_hallmark_gs_groups.txt](https://github.com/sanroman-24/tx100_rna_2024/blob/main/data/meta/martinez_ruiz_2023_hallmark_gs_groups.txt). Obtained from [Martínez-Ruiz et al, Nature 2023](https://www.nature.com/articles/s41586-023-05706-4#Sec8) |
 | Supplementary          | Table 4        | xx|
 | Supplementary          | Table 5        | xx|
