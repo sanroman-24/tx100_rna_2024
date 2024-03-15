@@ -61,6 +61,7 @@ annotation$type_collapsed <- str_replace(str_to_title(annotation$type_collapsed)
 
 annotation$wgii <- as.numeric(annotation$wgii)
 annotation$ITH <- as.numeric(annotation$ITH)
+annotation$ITH <- log(annotation$ITH + 1)
 annotation$purity <- as.numeric(annotation$purity)
 annotation$ploidy <- as.numeric(annotation$ploidy)
 

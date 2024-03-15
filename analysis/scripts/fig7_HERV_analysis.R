@@ -5,7 +5,7 @@
 set.seed(920101)
 
 # GENERAL LIBRARIES -----------------------------------------------------------
-lib <- c("tidyverse", "Polychrome", "RColorBrewer", "patchwork", 
+lib <- c("tidyverse", "Polychrome", "RColorBrewer", "patchwork", "janitor",
          "ComplexHeatmap", "ggpubr", "ggrepel")
 invisible(lapply(lib, library, character.only = TRUE))
 
@@ -61,6 +61,7 @@ vsd_median <- colMedians(vsd_mat) %>%
   as.data.frame() %>% 
   rownames_to_column()
 colnames(vsd_median) <- c("sample", "medianExp")
+vsd_median$sample <- colnames(vsd_mat)
 
 vsd_median_plot <- vsd_median %>% 
   left_join(metaDF, by = "sample") %>% 
@@ -229,9 +230,9 @@ vsd_cor <- vsd_median %>%
   dplyr::select(sample, medianExp, purity)
 
 # Read in TME results & keep only samples in vsd_cor
-tme <- readRDS(file.path(DATA, "consensusTME_batch_corrected.RDS"))
+tme <- readRDS("data/processed/tum_consensustme.rds")
 colnames(tme) <- str_replace_all(colnames(tme), "-", "_")
-keep <- intersect(vsd_cor$sample, colnames(tme))
+keep <- dplyr::intersect(vsd_cor$sample, colnames(tme))
 tme <- tme[, keep]
 idx <- match(colnames(tme), vsd_cor$sample)
 vsd_cor <- vsd_cor[idx, ]

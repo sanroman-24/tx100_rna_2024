@@ -105,15 +105,17 @@ dist_df <- data.frame(s1 = c(), s2 = c(), same_pat = c(), dist = c())
 
 pairs <- combn(umap_df$sample, 2)
 
-dist_df <- data.table::rbindlist(lapply(1:ncol(pairs), function(pair) {
-  s1 <- pairs[1, pair]
-  s2 <- pairs[2, pair]
-  dist <- calculate_dist_umap(s1, s2, umap_df)
-  p1 <- str_remove(s1, "-.*$")
-  p2 <- str_remove(s2, "-.*$")
-  same_pat <- ifelse(p1 == p2, "Yes", "No")
-  data.frame(s1, s2, same_pat, dist)
-}))
+dist_df <- data.table::rbindlist(
+  lapply(1:ncol(pairs), function(pair) {
+    s1 <- pairs[1, pair]
+    s2 <- pairs[2, pair]
+    dist <- calculate_dist_umap(s1, s2, umap_df)
+    p1 <- str_remove(s1, "-.*$")
+    p2 <- str_remove(s2, "-.*$")
+    same_pat <- ifelse(p1 == p2, "Yes", "No")
+    data.frame(s1, s2, same_pat, dist)
+  })
+)
 
 
 p <- ggplot(dist_df, aes(x = same_pat, y = dist)) +
