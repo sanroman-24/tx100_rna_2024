@@ -56,8 +56,8 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | 10             | None, manually using graphical design software|
 | Supplementary          | 11             | scRNA-Seq data is not publically available, hence code is not available|
 | Supplementary          | 12             | [analysis/scripts/surv_9p_prolif.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/surv_9p_prolif.R)|
-| Supplementary          | 13A             | [analysis/scripts/cgas_surv_tx.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/cgas_surv_tx.R)|
-| Supplementary          | 13B             | [analysis/scripts/cgas_surv_tcga.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/cgas_surv_tcga.R)|
+| Supplementary          | 13a             | [analysis/scripts/cgas_surv_tx.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/cgas_surv_tx.R)|
+| Supplementary          | 13b             | [analysis/scripts/cgas_surv_tcga.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/cgas_surv_tcga.R)|
 | Supplementary          | 14             | [analysis/scripts/surv_pan_cancer_slc19a1.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/surv_pan_cancer_slc19a1.R)|
 | Supplementary          | 15             | [analysis/scripts/04_consensustme_vs_histo.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/04_consensustme_vs_histo.R)|
 | Supplementary          | 16             | [analysis/scripts/tme_dist_vs_clonal_dist.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/tme_dist_vs_clonal_dist.R)|
@@ -72,7 +72,7 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | Table 1        | [analysis/scripts/normal_prim_ssgsea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/normal_prim_ssgsea.R)|
 | Supplementary          | Table 1        | [analysis/scripts/prim_met_ssgsea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/prim_met_ssgsea.R)|
 | Supplementary          | Table 3        | [data/meta/martinez_ruiz_2023_hallmark_gs_groups.txt](https://github.com/sanroman-24/tx100_rna_2024/blob/main/data/meta/martinez_ruiz_2023_hallmark_gs_groups.txt). Obtained from [Martínez-Ruiz et al, Nature 2023](https://www.nature.com/articles/s41586-023-05706-4#Sec8) |
-| Supplementary          | Table 4        | xx|
-| Supplementary          | Table 5        | xx|
+| Supplementary          | Table 4        | [analysis/scripts/cgas_dea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/cgas_dea.R)|
+| Supplementary          | Table 5        | [analysis/scripts/ssgsea_early_late.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/ssgsea_early_late.R)|
 
 
