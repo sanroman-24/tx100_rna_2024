@@ -250,7 +250,7 @@ vsd_known_hervs <- vsd_known_hervs[, idx]
 all(colnames(vsd_known_hervs) == colnames(tme))
 
 # Bind all into 1 data frame
-tme <- rbind(tme, vsd_cor, vsd_tme)
+tme <- rbind(tme, vsd_cor, vsd_known_hervs)
 tme_for_corr <- t(tme) %>% as.data.frame() %>% mutate_all(function(x) as.numeric(x))
 
 # Plot correlogram
