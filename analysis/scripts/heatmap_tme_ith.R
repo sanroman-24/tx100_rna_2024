@@ -320,21 +320,21 @@ ht2 <- oncoPrint(matrix_annotation2,
     name = "annotation", height = unit(60, "mm"), width = unit(50, "mm")
 )
 
-png(file.path(PLOT_DIR, "Fig5A_ITH_immune_heatmap.png"),
+png(file.path(PLOT_DIR, "Fig4A_ITH_immune_heatmap.png"),
     width = 180, height = 100, units = "mm", res = 400
 )
 ht %v% ht2
 dev.off()
 
 
-pdf(file.path(PLOT_DIR, "Fig5A_ITH_immune_heatmap.pdf"),
+pdf(file.path(PLOT_DIR, "Fig4A_ITH_immune_heatmap.pdf"),
     width = 180 / 25.4, height = 100 / 25.4
 )
 ht %v% ht2
 dev.off()
 
 
-svg(file.path(PLOT_DIR, "Fig5A_ITH_immune_heatmap.svg"),
+svg(file.path(PLOT_DIR, "Fig4A_ITH_immune_heatmap.svg"),
     width = 180 / 25.4, height = 100 / 25.4
 )
 ht %v% ht2
@@ -342,51 +342,51 @@ dev.off()
 
 # SURVIVAL BY SUBGROUP -----------------------------------------------
 
-lbls = sapply(1:nrow(matrix_annotation), function(i) {
-    r = matrix_annotation[i, ]
-    region_lbl = c("hot", "intermediate", "cold", "")
-    if (sum(!r %in% region_lbl) == 0){
-        lbl = paste0("homogeneous_", unique(r[!r %in% ""]))
-    } else {
-        lbl = unique(r[!r %in% c("hot", "cold", "intermediate", "")])
-    }
-})
+# lbls = sapply(1:nrow(matrix_annotation), function(i) {
+#     r = matrix_annotation[i, ]
+#     region_lbl = c("hot", "intermediate", "cold", "")
+#     if (sum(!r %in% region_lbl) == 0){
+#         lbl = paste0("homogeneous_", unique(r[!r %in% ""]))
+#     } else {
+#         lbl = unique(r[!r %in% c("hot", "cold", "intermediate", "")])
+#     }
+# })
 
-names(lbls) = rownames(matrix_annotation)
+# names(lbls) = rownames(matrix_annotation)
 
-df = data.frame(Patient = names(lbls), lbl = lbls)
-write_delim(df, file.path(OUT_DIR, "TME_het_group.tsv"), delim = "\t")
+# df = data.frame(Patient = names(lbls), lbl = lbls)
+# write_delim(df, file.path(OUT_DIR, "TME_het_group.tsv"), delim = "\t")
 
-clinical_data = merge(clinical_data, df, by = "Patient") %>%
-  mutate(pfs = ifelse(`PFS (months)` == "-", 0, 1)) %>%
-  mutate(pfs_time = as.numeric(ifelse(`PFS (months)` == "-",
-    `Total follow up (months)`, `PFS (months)`
-  ))) %>%
-  mutate(OS = ifelse(Outcome == "Death", 1, 0)) %>%
-  mutate(OS_time = as.numeric(`Total follow up (months)`))
+# clinical_data = merge(clinical_data, df, by = "Patient") %>%
+#   mutate(pfs = ifelse(`PFS (months)` == "-", 0, 1)) %>%
+#   mutate(pfs_time = as.numeric(ifelse(`PFS (months)` == "-",
+#     `Total follow up (months)`, `PFS (months)`
+#   ))) %>%
+#   mutate(OS = ifelse(Outcome == "Death", 1, 0)) %>%
+#   mutate(OS_time = as.numeric(`Total follow up (months)`))
 
-# only 1 homogeneous cold patient, so remove
-clinical_data = clinical_data[clinical_data$lbl != "homogeneous_cold", ]
+# # only 1 homogeneous cold patient, so remove
+# clinical_data = clinical_data[clinical_data$lbl != "homogeneous_cold", ]
 
-plt = "lancet"
-# PFS
-km_fit <- survfit(Surv(pfs_time, pfs) ~ lbl,
-  data = clinical_data
-)
+# plt = "lancet"
+# # PFS
+# km_fit <- survfit(Surv(pfs_time, pfs) ~ lbl,
+#   data = clinical_data
+# )
 
-km_plot <- plot_km(clinical_data, km_fit, plt = plt)
+# km_plot <- plot_km(clinical_data, km_fit, plt = plt)
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig12_PFS_TME_groups"), w = 70, h = 90)
+# save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig12_PFS_TME_groups"), w = 70, h = 90)
 
-coxph(Surv(pfs_time, pfs) ~ lbl, data = clinical_data)
+# coxph(Surv(pfs_time, pfs) ~ lbl, data = clinical_data)
 
-# OS
-km_fit <- survfit(Surv(OS_time, OS) ~ lbl,
-  data = clinical_data
-)
+# # OS
+# km_fit <- survfit(Surv(OS_time, OS) ~ lbl,
+#   data = clinical_data
+# )
 
-km_plot <- plot_km(clinical_data, km_fit, plt = plt)
+# km_plot <- plot_km(clinical_data, km_fit, plt = plt)
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig12_OS_TME_groups"), w = 70, h = 90)
+# save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig12_OS_TME_groups"), w = 70, h = 90)
 
-coxph(Surv(OS_time, OS) ~ lbl, data = clinical_data)
+# coxph(Surv(OS_time, OS) ~ lbl, data = clinical_data)

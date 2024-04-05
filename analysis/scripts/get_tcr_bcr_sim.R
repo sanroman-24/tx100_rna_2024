@@ -138,7 +138,7 @@ p <- p +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   lemon::coord_capped_cart(bottom = "both", left = "both")
 
-save_ggplot(p, file.path(PLOT_DIR, "Fig6A_TCR_sim_summary"), w = 180, h = 70)
+save_ggplot(p, file.path(PLOT_DIR, "Fig5A_TCR_sim_summary"), w = 180, h = 70)
 
 # PLOT BCR SIMILARITY -----------------------------------------------------
 p <- ggplot(sim_pairs_df, aes(x = patient_ord, y = bcr_sim)) +
@@ -161,15 +161,15 @@ p <- p +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   lemon::coord_capped_cart(bottom = "both", left = "both")
 
-save_ggplot(p, file.path(PLOT_DIR, "Fig6A_BCR_sim_summary"), w = 180, h = 70)
+save_ggplot(p, file.path(PLOT_DIR, "Fig5A_BCR_sim_summary"), w = 180, h = 70)
 
 # GET CORRELATION BETWEEN TCR / BCR ----------------------------------------
 
-p <- scatter_plot(
-  sim_pairs_df, "bcr_sim", "tcr_sim",
-  "TCR similarity", "BCR similarity"
-)
+# p <- scatter_plot(
+#   sim_pairs_df, "bcr_sim", "tcr_sim",
+#   "TCR similarity", "BCR similarity"
+# )
 
-p = p + geom_smooth(method = "lm") + ggpubr::stat_cor()
+# p = p + geom_smooth(method = "lm") + ggpubr::stat_cor()
 
-save_ggplot(p, file.path(PLOT_DIR, "SuppFig19_BCR_TCR_sim_cor"), w = 70, h = 70)
+# save_ggplot(p, file.path(PLOT_DIR, "SuppFig19_BCR_TCR_sim_cor"), w = 70, h = 70)

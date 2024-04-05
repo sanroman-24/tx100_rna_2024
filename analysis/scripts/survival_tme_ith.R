@@ -68,7 +68,7 @@ km_fit <- survfit(Surv(pfs_time, pfs) ~ high_ited,
 
 km_plot <- plot_km(tme_ith_df, km_fit, plt = c("black", "orange"))
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "Fig5C_tme_ith_PFS"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(PLOT_DIR, "Fig4C_tme_ith_PFS"), h = 90, w = 70)
 
 # OS KM
 km_fit <- survfit(Surv(OS_time, OS) ~ high_ited,
@@ -77,7 +77,7 @@ km_fit <- survfit(Surv(OS_time, OS) ~ high_ited,
 
 km_plot <- plot_km(tme_ith_df, km_fit, plt = c("black", "orange"))
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFigXX_tme_ith_OS"), h = 90, w = 70)
+# save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFigXX_tme_ith_OS"), h = 90, w = 70)
 
 # Cox regression
 coxph(Surv(OS_time, OS) ~ ited, data = tme_ith_df)

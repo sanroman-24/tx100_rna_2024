@@ -105,11 +105,11 @@ km <- survfit(Surv(follow_up_PFS_month, progression_free_survival) ~ SLCENPP_wgi
 )
 
 km_plot <- plot_km(annotation, km, plt = plt)
-save_baseplot(km_plot, file.path(FIG_DIR, "Fig4E_cgas_wgii_pfs"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(FIG_DIR, "SupFig15A_cgas_wgii_pfs"), h = 90, w = 70)
 
 # OS
 km <- survfit(Surv(`total follow up (month)`, Overall_Survival) ~ SLCENPP_wgii,
     data = annotation
 )
 km_plot <- plot_km(annotation, km, plt = plt)
-save_baseplot(km_plot, file.path(FIG_DIR, "Fig4E_cgas_wgii_os"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(FIG_DIR, "Fig3G_cgas_wgii_os"), h = 90, w = 70)

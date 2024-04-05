@@ -88,7 +88,7 @@ p <- violin_plot(
     ylim = c(0, 1)
 )
 
-save_ggplot(p, file.path(PLOT_DIR, "Fig6D_TCR_similarity"), w = 75, h = 45)
+save_ggplot(p, file.path(PLOT_DIR, "Fig5D_TCR_similarity"), w = 75, h = 45)
 
 summary(run_lme(
     "tcr_sim", "clonal_dist", "pat",
@@ -106,7 +106,7 @@ p <- violin_plot(
     ylim = c(0, 1)
 )
 
-save_ggplot(p, file.path(PLOT_DIR, "SuppFig23_BCR_similarity"), w = 75, h = 45)
+save_ggplot(p, file.path(PLOT_DIR, "SuppFig24_BCR_similarity"), w = 75, h = 45)
 
 summary(run_lme(
     "bcr_sim", "clonal_dist", "pat",

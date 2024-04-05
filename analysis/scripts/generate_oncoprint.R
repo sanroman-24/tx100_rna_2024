@@ -175,7 +175,7 @@ col_ha <- HeatmapAnnotation(
 
 # Plot oncoprint and save it ----------------------------------------------
 
-# pdf(file.path(OUT_DIR, "Fig1_tx_rna_oncoprint.pdf"), width = 16, height = 4.5)
+# pdf(file.path(OUT_DIR, "SupFig1_tx_rna_oncoprint.pdf"), width = 16, height = 4.5)
 ht <- oncoPrint(alterations,
   alter_fun = alter_fun, col = col,
   top_annotation = NULL,
@@ -188,7 +188,7 @@ ht <- oncoPrint(alterations,
 ht <- draw(ht, annotation_legend_side = "bottom")
 # dev.off()
 save_baseplot(ht,
-  file.path(OUT_DIR, "Fig1_tx_rna_oncoprint"),
+  file.path(OUT_DIR, "SupFig1_tx_rna_oncoprint"),
   w = 16 * 25.4, h = 4.5 * 25.4
 )
 

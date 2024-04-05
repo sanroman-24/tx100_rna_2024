@@ -54,7 +54,7 @@ p <- plot_paired_boxplot(td_pairs,
     ylab = "I-TED", xlab = "", ylim = c(0,1)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig3B_td_primprim_primmet"), w = 40, h = 40)
+save_ggplot(p, file.path(FIG_DIR, "Fig2B_td_primprim_primmet"), w = 40, h = 40)
 
 all_pairs_prim_met <- get_all_td_pairs_prim_noprim(
     d_mat, annotation, 

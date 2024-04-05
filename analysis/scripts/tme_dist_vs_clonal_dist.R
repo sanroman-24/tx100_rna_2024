@@ -86,7 +86,7 @@ p <- violin_plot(
     ylim = c(0, 1)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "SupFig13_tme_clonaldist"), w = 75, h = 45)
+save_ggplot(p, file.path(FIG_DIR, "SupFig18_tme_clonaldist"), w = 75, h = 45)
 # Run LME to control for inclusion mulitple pairs from same patient
 summary(run_lme(
     "clonal_dist", "tme", "pat",

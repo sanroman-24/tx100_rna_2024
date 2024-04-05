@@ -78,12 +78,12 @@ p <- violin_plot(
   df = clonal_dist_df, x_str = "dist",
   y_str = "td", x_title = "Clonal distance",
   y_title = "Transcriptional distance",
-  labs_x = as.character(1:5),
+  labs_x = as.character(0:5),
   fun.y = "mean",
   ylim = c(0, 1)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig3C_td_clonaldist"), w = 75, h = 45)
+save_ggplot(p, file.path(FIG_DIR, "Fig2C_td_clonaldist"), w = 75, h = 45)
 # Run LME to control for inclusion mulitple pairs from same patient
 run_lme(
   "clonal_dist", "td", "pat",

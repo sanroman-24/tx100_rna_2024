@@ -120,7 +120,7 @@ p = df_to_ggpaired(
                 ylab = sign, xlab = "", ylim = c(NA)
             )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig5D_T_eff"), w = 45, h = 45)
+save_ggplot(p, file.path(FIG_DIR, "Fig4D_T_eff"), w = 45, h = 45)
 
 p = df_to_ggpaired(
             df = ssgsea, pat_var = "patient",
@@ -131,7 +131,7 @@ p = df_to_ggpaired(
                 ylab = sign, xlab = "", ylim = c(NA)
             )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig5D_myeloid"), w = 45, h = 45)
+save_ggplot(p, file.path(FIG_DIR, "Fig4D_myeloid"), w = 45, h = 45)
 
 
 # Perform all the comparisons between MOTZER signature scores using LME
@@ -176,4 +176,4 @@ p <- plot_lolli(
     xlim = c(-2, 2)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig3F_ssgsea_early_late_lolli"), w = 50, h = 45)
+save_ggplot(p, file.path(FIG_DIR, "Fig2E_ssgsea_early_late_lolli"), w = 50, h = 45)

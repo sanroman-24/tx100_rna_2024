@@ -13,7 +13,8 @@ library(survminer)
 # PATHS -------------------------------------------------------------------
 
 BASE <- here::here()
-DATA_DIR <- file.path(BASE, "data", "raw")
+## DOWNLOAD CORRESPONDING FILES HERE: https://figshare.com/s/f9982c2ab465317e6cc9
+DATA_DIR <- file.path(BASE, "data", "raw", "ext")
 META_DIR <- file.path(BASE, "data", "meta")
 OUT_DIR <- file.path(BASE, "analysis", "outputs")
 FIG_DIR <- file.path(BASE, "analysis", "figures")
@@ -139,7 +140,7 @@ p <- hrOSSurvivalSLC19A1 %>% mutate(CI50 = (CI2.5+CI97.5) / 2) %>%
   scale_x_log10(breaks = c(0.1, 1, 10), limits = c(0.1, 10)) 
 
 # save plot
-save_ggplot(p, file.path(FIG_DIR, "SupFig_pancan_os_slc19a1"), w = 100, h = 100)
+save_ggplot(p, file.path(FIG_DIR, "SupFig16_pancan_os_slc19a1"), w = 100, h = 100)
 
 # plot forest plot for PFS Hazard Ratio with SLC19A1 as continuous variable
 p <- hrPFSSurvivalSLC19A1 %>% mutate(CI50 = (CI2.5+CI97.5) / 2) %>%
@@ -156,4 +157,4 @@ p <- hrPFSSurvivalSLC19A1 %>% mutate(CI50 = (CI2.5+CI97.5) / 2) %>%
   scale_x_log10(breaks = c(0.1, 1, 10), limits = c(0.1, 10)) 
 
 # save plot
-save_ggplot(p, file.path(FIG_DIR, "SupFig_pancan_pfs_slc19a1"), w = 100, h = 100)
+save_ggplot(p, file.path(FIG_DIR, "SupFig16_pancan_pfs_slc19a1"), w = 100, h = 100)

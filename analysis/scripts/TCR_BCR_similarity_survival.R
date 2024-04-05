@@ -50,7 +50,7 @@ km <- survfit(Surv(pfs_time, pfs) ~ high_tcr_sim,
 )
 
 km_plot <- plot_km(summary_sim, km, plt = plt)
-save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFigX_TCR_sim_pfs"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig21_TCR_sim_pfs"), h = 90, w = 70)
 
 
 
@@ -63,7 +63,7 @@ km <- survfit(Surv(pfs_time, pfs) ~ high_bcr_sim,
 )
 
 km_plot <- plot_km(summary_sim, km, plt = plt)
-save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFigX_BCR_sim_pfs"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig21_BCR_sim_pfs"), h = 90, w = 70)
 
 # BCR & TCR
 summary_sim$tcr_bcr_group <- paste0(
@@ -78,6 +78,6 @@ km <- survfit(Surv(pfs_time, pfs) ~ tcr_bcr_group,
 )
 plt <- "lancet"
 km_plot <- plot_km(summary_sim, km, plt = plt)
-save_baseplot(km_plot, file.path(PLOT_DIR, "Fig6B_BCR_TCR_sim_pfs"),
+save_baseplot(km_plot, file.path(PLOT_DIR, "Fig5B_BCR_TCR_sim_pfs"),
     h = 90, w = 70
 )

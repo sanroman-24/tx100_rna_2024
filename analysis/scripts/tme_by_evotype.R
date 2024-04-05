@@ -86,7 +86,7 @@ p = p + scale_y_discrete(
     )
 
 # save plot
-save_ggplot(p, file.path(PLOT_DIR, "Fig5E_immune_evotypes"), w = 130, h = 60)
+save_ggplot(p, file.path(PLOT_DIR, "Fig4E_immune_evotypes"), w = 130, h = 60)
 
 
 # no legend
@@ -103,4 +103,4 @@ p = p + scale_y_discrete(
     )
 
 # save plot
-save_ggplot(p, file.path(PLOT_DIR, "Fig5E_immune_evotypes_no_lgd"), w = 130, h = 60)
+save_ggplot(p, file.path(PLOT_DIR, "Fig4E_immune_evotypes_no_lgd"), w = 130, h = 60)

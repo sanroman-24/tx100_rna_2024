@@ -101,22 +101,23 @@ plist <- lapply(
 )
 
 save_plist(plist,
-    fp = file.path(FIG_DIR, "SupFig14_TME_term_noterm"),
+    fp = file.path(FIG_DIR, "SupFig19_TME_term_noterm"),
     w = 275, h = 275, ncol = 4
 )
 
-# Compare also differences in purity
-p <- df_to_ggpaired(
-    df = tme, pat_var = "patient",
-    cond = "pat_terminal", var_str = "purity"
-) %>%
-    plot_paired_boxplot(
-        cond1 = "No terminal", cond2 = "Terminal",
-        ylab = "Tumour Purity",
-        xlab = "", ylim = c(NA)
-    )
+# # Compare also differences in purity 
+# (non-significant, suggest what's different is actual composition)
+# p <- df_to_ggpaired(
+#     df = tme, pat_var = "patient",
+#     cond = "pat_terminal", var_str = "purity"
+# ) %>%
+#     plot_paired_boxplot(
+#         cond1 = "No terminal", cond2 = "Terminal",
+#         ylab = "Tumour Purity",
+#         xlab = "", ylim = c(NA)
+#     )
 
-save_ggplot(p,
-    file.path(FIG_DIR, "SupFig15_pur_term_noterm"),
-    w = 75, h = 75
-)
+# save_ggplot(p,
+#     file.path(FIG_DIR, "SupFigX_pur_term_noterm"),
+#     w = 75, h = 75
+# )

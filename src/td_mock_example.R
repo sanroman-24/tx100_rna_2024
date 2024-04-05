@@ -33,11 +33,11 @@ set.seed(727)
 
 # about 0.8 cor, so 0.2 dist
 p1 <- generate_plot_data(sd = 0.78)
-save_ggplot(p1, file.path(FIG_DIR, "SupFig_08_cor"), 40, 40)
+save_ggplot(p1, file.path(FIG_DIR, "SupFig6_08cor"), 40, 40)
 # about 0.6 cor, so 0.4 dist
 p2 <- generate_plot_data(sd = 1.25)
-save_ggplot(p2, file.path(FIG_DIR, "SupFig_06_cor"), 40, 40)
+save_ggplot(p2, file.path(FIG_DIR, "SupFig6_06cor"), 40, 40)
 # about 0.7 cor, so 0.3 dist
 p3 <- generate_plot_data(sd = 0.97)
-save_ggplot(p3, file.path(FIG_DIR, "SupFig_07_cor"), 40, 40)
+save_ggplot(p3, file.path(FIG_DIR, "SupFig6_07cor"), 40, 40)
 

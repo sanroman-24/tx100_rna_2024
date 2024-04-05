@@ -89,6 +89,6 @@ p <- violin_plot(td_df,
 
 save_ggplot(
     p,
-    file.path(FIG_DIR, "SupFig7_td_prim_norm_clonal"),
+    file.path(FIG_DIR, "SupFig8_td_prim_norm_clonal"),
     w = 75, h = 45
 )

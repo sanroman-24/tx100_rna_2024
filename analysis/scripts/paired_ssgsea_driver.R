@@ -7,6 +7,7 @@ rm(list = ls(all = TRUE))
 # LIBRARIES ---------------------------------------------------------------
 
 library(tidyverse)
+library(stringr)
 library(ggpubr)
 library(here)
 library(harmonicmeanp)
@@ -62,7 +63,7 @@ ssgsea <- ssgsea[ssgsea$type_collapsed == "PRIMARY", ]
 
 # CALCULATE DIFFERENCES IN SSGSEA BASED ON MUT STATUS ---------------------
 
-drivers <- c("PBRM1", "SETD2", "loss_9p", "loss_14q")
+drivers <- c("loss_9p", "loss_14q")
 
 ssgsea_difs_df <- data.frame(gene = c(), pathway = c(), avg_dif = c(), p_val = c())
 
@@ -97,29 +98,29 @@ p <- plot_tile(
     fill_str = "sign", lgd = "no"
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig4B_ssgsea_paired_driver"), w = 180, h = 50)
+save_ggplot(p, file.path(FIG_DIR, "Fig3B_ssgsea_paired_driver"), w = 180, h = 50)
 
 p <- plot_tile(
     df = ssgsea_difs_df, x_str = "pathway", y_str = "gene",
     fill_str = "sign", lgd = "yes"
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig4B_ssgsea_paired_driver_legend"), w = 180, h = 70)
+save_ggplot(p, file.path(FIG_DIR, "Fig3B_ssgsea_paired_driver_legend"), w = 180, h = 70)
 
 # same plot, but reducing the number of pathways with the data from Carlos Martinez-Ruiz et al, Nature 2023
-ssgsea_difs_df <- ssgsea_difs_df %>%
-    filter(Functional_group != "immune") %>% # focus on immune on different section of the paper
-    group_by(Functional_group, gene) %>%
-    summarise(p_val = hmp.stat(p_val), avg_mt_minus_wt = mean(avg_mt_minus_wt)) %>%
-    mutate(sign = -log10(p_val) * sign(avg_mt_minus_wt)) %>%
-    mutate(sign = case_when(
-        sign < -3 ~ -3,
-        sign > 3 ~ 3,
-        TRUE ~ sign
-    ))
-p <- plot_tile(ssgsea_difs_df,
-    x_str = "gene",
-    y_str = "Functional_group", fill_str = "sign", lgd = "no"
-)
+# ssgsea_difs_df <- ssgsea_difs_df %>%
+#     filter(Functional_group != "immune") %>% # focus on immune on different section of the paper
+#     group_by(Functional_group, gene) %>%
+#     summarise(p_val = hmp.stat(p_val), avg_mt_minus_wt = mean(avg_mt_minus_wt)) %>%
+#     mutate(sign = -log10(p_val) * sign(avg_mt_minus_wt)) %>%
+#     mutate(sign = case_when(
+#         sign < -3 ~ -3,
+#         sign > 3 ~ 3,
+#         TRUE ~ sign
+#     ))
+# p <- plot_tile(ssgsea_difs_df,
+#     x_str = "gene",
+#     y_str = "Functional_group", fill_str = "sign", lgd = "no"
+# )
 
-save_ggplot(p, file.path(FIG_DIR, "ssgsea_paired_groups"), w = 100, h = 100)
+# save_ggplot(p, file.path(FIG_DIR, "ssgsea_paired_groups"), w = 100, h = 100)

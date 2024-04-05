@@ -96,11 +96,11 @@ p <- ggplot(res_df, aes(x = pc, y = feature, fill = ifelse(padj < .05, -log10(pa
 
 p <- change_axes(p)
 
-save_ggplot(p, file.path(OUT_DIR, "Fig2C_pca_lme"), w = 50, h = 40)
+save_ggplot(p, file.path(OUT_DIR, "SupFig3_pca_lme"), w = 50, h = 40)
 
 p <- p + theme(legend.position = "none")
 
-save_ggplot(p, file.path(OUT_DIR, "Fig2C_pca_lme_no_legend"), w = 50, h = 40)
+save_ggplot(p, file.path(OUT_DIR, "SupFig3_pca_lme_no_legend"), w = 50, h = 40)
 
 
 
@@ -144,12 +144,12 @@ p <- ggplot(res_df, aes(
 
 p <- change_axes(p)
 
-save_ggplot(p, file.path(OUT_DIR, "SuppFig2_pca_lme_tr_lgd"),
+save_ggplot(p, file.path(OUT_DIR, "SuppFig4_pca_lme_tr_lgd"),
   w = 100, h = 100
 )
 
 p <- p + theme(legend.position = "none")
 
-save_ggplot(p, file.path(OUT_DIR, "SuppFig2_pca_lme_tr_nolgd"),
+save_ggplot(p, file.path(OUT_DIR, "SuppFig4_pca_lme_tr_nolgd"),
   w = 70, h = 60
 )

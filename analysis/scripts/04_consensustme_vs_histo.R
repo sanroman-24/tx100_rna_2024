@@ -85,7 +85,7 @@ p <- scatter_plot(
 ) + geom_smooth(method = "lm", se = FALSE, col = "red") +
   ggpubr::stat_cor(method = "spearman", size = 2) + xlim(c(0, 4000))
 
-save_ggplot(p = p, fp = file.path(OUT_DIR, "SupFigXX_Tcell_benchmark"), w = 50, h = 50)
+save_ggplot(p = p, fp = file.path(OUT_DIR, "SupFig17b_Tcell_benchmark"), w = 50, h = 50)
 
 
 
@@ -103,4 +103,4 @@ p <- scatter_plot(
   ggpubr::stat_cor(method = "spearman", size = 2) +
   xlim(c(0, 4500))
 
-save_ggplot(p = p, fp = file.path(OUT_DIR, "SupFigXX_Macrophage_benchmark"), w = 50, h = 50)
+save_ggplot(p = p, fp = file.path(OUT_DIR, "SupFig17A_Macrophage_benchmark"), w = 50, h = 50)

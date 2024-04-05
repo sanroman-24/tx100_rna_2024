@@ -98,7 +98,7 @@ p <- umap_df %>%
   ))
 p <- change_axes(p)
 
-save_ggplot(p, file.path(OUT_DIR, "Fig2a_UMAP"), w = 40, h = 40)
+save_ggplot(p, file.path(OUT_DIR, "Fig1a_UMAP"), w = 40, h = 40)
 
 # ESTIMATE DISTANCE IN UMAP SPACE SAMPLE SAME PATIENT VS DIFFERENT --------
 dist_df <- data.frame(s1 = c(), s2 = c(), same_pat = c(), dist = c())
@@ -126,7 +126,7 @@ p <- ggplot(dist_df, aes(x = same_pat, y = dist)) +
 
 p <- change_axes(p)
 
-save_ggplot(p, file.path(OUT_DIR, "Fig2b_ith_inter_ratio_umap"), w = 35, h = 35)
+save_ggplot(p, file.path(OUT_DIR, "SupFig2_ith_inter_ratio_umap"), w = 35, h = 35)
 
 # Estimate how much higher ITH compared to intertumour heterogeneity
 B <- 1000
@@ -179,4 +179,4 @@ p <- ggplot(df, aes(x = t, fill = same_patient, y = fq)) +
   coord_capped_flip() +
   theme(legend.position = "none")
 
-save_ggplot(p, file.path(OUT_DIR, "SupFig4_UMAP_clustering"), w = 60, h = 35)
+save_ggplot(p, file.path(OUT_DIR, "SupFig5b_UMAP_clustering"), w = 60, h = 35)

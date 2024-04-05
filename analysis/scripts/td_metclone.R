@@ -77,7 +77,7 @@ p <- violin_plot(
   ylim = c(0, 1)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig3C_td_metclone"), w = 40, h = 40)
+save_ggplot(p, file.path(FIG_DIR, "Fig2D_td_metclone"), w = 40, h = 40)
 
 # Run LME to control for inclusion mulitple pairs from same patient
 summary(run_lme(
@@ -110,6 +110,6 @@ p <- violin_plot(
   ylim = c(0, 1)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "SupFig6_td_prim_met"),
+save_ggplot(p, file.path(FIG_DIR, "SupFig10_td_prim_met"),
   w = 75, h = 45
 )

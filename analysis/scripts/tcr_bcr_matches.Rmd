@@ -104,9 +104,9 @@ is_same_pt <- function(sample_pair_names){
 sharedTCRMat <- immunarch::repOverlap(TCRClonotypes$data, .method = "public")
 # arrange samples of the same patient together
 sharedTCRMat <- sharedTCRMat[sort(rownames(sharedTCRMat)), sort(colnames(sharedTCRMat))]
-png(filename = file.path(FIG_DIR, "sharedTCR_heatmap.png"), width = 80, height = 80, units = "mm", res = 400)
-pheatmap(sharedTCRMat, cluster_rows = FALSE, cluster_cols = FALSE, show_colnames = FALSE, show_rownames = FALSE, color = hcl.colors(4, "Blues"), breaks = c(0, 1, 15, max(sharedTCRMat, na.rm = TRUE)), legend = FALSE)
-dev.off()
+# png(filename = file.path(FIG_DIR, "sharedTCR_heatmap.png"), width = 80, height = 80, units = "mm", res = 400)
+# pheatmap(sharedTCRMat, cluster_rows = FALSE, cluster_cols = FALSE, show_colnames = FALSE, show_rownames = FALSE, color = hcl.colors(4, "Blues"), breaks = c(0, 1, 15, max(sharedTCRMat, na.rm = TRUE)), legend = FALSE)
+# dev.off()
 ```
 
 We can clearly see that the TCR clones that have the same sequence are usually found in the same patient. Let's corroborate this observation
@@ -300,7 +300,7 @@ p = ggplot(samePatientProps, aes(x = pair_relationship, y = prop_pairs, fill = m
           axis.text.y = element_text(size = 5),
           legend.position = "none")
 
-save_ggplot(p, file.path(FIG_DIR, "Fig6C_shared_tcr_prop"), w = 45, h = 35)
+save_ggplot(p, file.path(FIG_DIR, "Fig5C_shared_tcr_prop"), w = 45, h = 35)
 ```
 
 ```{r clonality_shared_unique}
@@ -319,7 +319,7 @@ p = ggplot(allTCRClones, aes(x = Type, y = Proportion)) +
   labs(x = "TCR shared in over 1 region") + 
   ggpubr::stat_compare_means(size = 2)
 
-save_ggplot(p, file.path(FIG_DIR, "SupFig22_tcr_clonality_shared"), 
+save_ggplot(p, file.path(FIG_DIR, "SupFig23_tcr_clonality_shared"), 
             w = 45, h = 45)
 allTCRClones %>% group_by(Type) %>% summarise(mean(Proportion))
 ```
@@ -330,9 +330,9 @@ allTCRClones %>% group_by(Type) %>% summarise(mean(Proportion))
 sharedBCRMat <- immunarch::repOverlap(BCRClonotypes$data, .method = "public")
 # arrange samples of the same patient together
 sharedBCRMat <- sharedBCRMat[sort(rownames(sharedBCRMat)), sort(colnames(sharedBCRMat))]
-png(filename = file.path(FIG_DIR, "sharedBCR_heatmap.png"), width = 80, height = 80, units = "mm", res = 400)
-pheatmap(sharedBCRMat, cluster_rows = FALSE, cluster_cols = FALSE, show_colnames = FALSE, show_rownames = FALSE, color = hcl.colors(4, "Blues"), breaks = c(0, 1, 15, max(sharedBCRMat, na.rm = TRUE)), legend = FALSE)
-dev.off()
+# png(filename = file.path(FIG_DIR, "sharedBCR_heatmap.png"), width = 80, height = 80, units = "mm", res = 400)
+# pheatmap(sharedBCRMat, cluster_rows = FALSE, cluster_cols = FALSE, show_colnames = FALSE, show_rownames = FALSE, color = hcl.colors(4, "Blues"), breaks = c(0, 1, 15, max(sharedBCRMat, na.rm = TRUE)), legend = FALSE)
+# dev.off()
 ```
 
 We can clearly see that the BCR clones that have the same sequence are usually found in the same patient. Let's corroborate this observation
@@ -517,5 +517,5 @@ p = ggplot(samePatientProps, aes(x = pair_relationship, y = prop_pairs, fill = m
         axis.text.y = element_text(size = 5),
         legend.position = "none")
 
-save_ggplot(p, file.path(FIG_DIR, "SupFigX_shared_bcr_prop"), w = 45, h = 35)
+save_ggplot(p, file.path(FIG_DIR, "SupFig22_shared_bcr_prop"), w = 45, h = 35)
 ```

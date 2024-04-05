@@ -104,7 +104,7 @@ p <- plot_volcano(
     alpha_str = "alpha", lgd = "yes", xlim = c(-5, 5)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig4D_dea_wgii_legend"), w = 45, h = 65)
+save_ggplot(p, file.path(FIG_DIR, "Fig3C_dea_wgii_legend"), w = 45, h = 65)
 
 
 p <- plot_volcano(
@@ -113,4 +113,4 @@ p <- plot_volcano(
     alpha_str = "alpha", lgd = "no", xlim = c(-5, 5)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig4D_dea_wgii"), w = 45, h = 65)
+save_ggplot(p, file.path(FIG_DIR, "Fig3C_dea_wgii"), w = 45, h = 65)

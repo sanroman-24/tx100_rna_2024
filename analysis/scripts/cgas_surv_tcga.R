@@ -110,11 +110,11 @@ km <- survfit(Surv(PFS.time, PFS) ~ SLCENPP_wgii,
 )
 
 km_plot <- plot_km(annotation, km, plt = plt)
-save_baseplot(km_plot, file.path(FIG_DIR, "Fig4F_cgas_wgii_pfs"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(FIG_DIR, "SupFig15B_cgas_wgii_pfs"), h = 90, w = 70)
 
 # OS
 km <- survfit(Surv(OS.time,OS) ~ SLCENPP_wgii,
     data = annotation
 )
 km_plot <- plot_km(annotation, km, plt = plt)
-save_baseplot(km_plot, file.path(FIG_DIR, "Fig4F_cgas_wgii_os"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(FIG_DIR, "Fig3H_cgas_wgii_os"), h = 90, w = 70)

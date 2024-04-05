@@ -153,4 +153,4 @@ af <- get_perc_variation(form, df = tme_ith_df)
 p <- plot_perc_variation(af)
 p <- p + theme(legend.position = "none")
 
-save_ggplot(p, file.path(FIG_DIR, "Fig5B_correlates_tme_ith"), w = 70, h = 45)
+save_ggplot(p, file.path(FIG_DIR, "Fig4B_correlates_tme_ith"), w = 70, h = 45)

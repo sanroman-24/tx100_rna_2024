@@ -102,6 +102,6 @@ p = p +
 
 p = change_axes(p)
 
-save_ggplot(p, file.path(PLOT_DIR, "Fig2E_Transcriptional_ITED_primary"), w = 180, h = 70)
+save_ggplot(p, file.path(PLOT_DIR, "Fig1B_Transcriptional_ITED_primary"), w = 180, h = 70)
 
 

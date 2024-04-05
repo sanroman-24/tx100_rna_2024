@@ -118,7 +118,7 @@ p <- violin_plot(
 
 p <- p + scale_x_discrete(limits = c("yes_met_clone", "no_met_clone"))
 
-save_ggplot(p, file.path(PLOT_DIR, "Fig6E_tcr_sim_metclone"), w = 40, h = 40)
+save_ggplot(p, file.path(PLOT_DIR, "Fig5E_tcr_sim_metclone"), w = 40, h = 40)
 
 summary(run_lme("sim", "metastasising_clone", "Patient", tcr_sim_sub))
 # p_value = 0.047 for greater similarity to primary regions with met clone

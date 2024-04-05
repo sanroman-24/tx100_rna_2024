@@ -66,7 +66,7 @@ plist <- lapply(drivers, function(driver) {
 })
 
 save_plist(plist,
-    fp = file.path(FIG_DIR, "SupFig16_CD8_paired_driver"),
+    fp = file.path(FIG_DIR, "SupFig20_CD8_paired_driver"),
     w = 150, h = 150, ncol = 2
 )
 
