@@ -147,8 +147,9 @@ iteds_df <- left_join(iteds_df, clinical_data, by = "Subject")
 iteds_df$Stage <- ifelse(
   iteds_df$`Overall Stage` %in% c("I", "II"), "I-II", "III-IV"
 )
+iteds_df$size <- as.numeric(iteds_df[["Size of primary tumour (mm)"]])
 
-form <- "ited ~ pur_ith + subclonal_scna + Stage + Regions + ITH_scaled + SETD2_alt + PBRM1_alt + subclonal_9p + subclonal_14q + subclonal_wgd"
+form <- "ited ~ pur_ith + subclonal_scna + Stage + Regions + size + ITH_scaled + SETD2_alt + PBRM1_alt + subclonal_9p + subclonal_14q + subclonal_wgd"
 af <- get_perc_variation(form, df = iteds_df)
 p <- plot_perc_variation(af)
 p <- p + theme(legend.position = "none")
