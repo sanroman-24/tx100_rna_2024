@@ -23,7 +23,7 @@ FIG_DIR <- file.path(BASE, "analysis", "figures")
 META_DIR <- file.path(BASE, "data", "meta")
 ANNOTATION_PATH <- file.path(META_DIR, "tx_annotation.tsv")
 TME_PATH <- file.path(BASE, "data", "processed", "tum_consensustme.rds")
-HALLMARK_GROUPS_PATH <- HALLMARK_GROUPS_PATH <- file.path(META_DIR, "martinez_ruiz_2023_hallmark_gs_groups.txt")
+HALLMARK_GROUPS_PATH <- file.path(META_DIR, "martinez_ruiz_2023_hallmark_gs_groups.txt")
 
 # FUNCTIONS ---------------------------------------------------------------
 source(file.path(BASE, "src", "plotting_theme.R"))
