@@ -79,6 +79,8 @@ for (driver in drivers) {
 ssgsea_difs_df$Hallmark <- str_remove(str_to_lower(ssgsea_difs_df$pathway), "hallmark_")
 ssgsea_difs_df <- merge(ssgsea_difs_df, gene_groups, by = "Hallmark")
 
+write_delim(ssgsea_difs_df, file.path(OUT_DIR, "ssgsea_difs_9p_14q.tsv"), delim = "\t")
+
 ssgsea_difs_df <- ssgsea_difs_df %>%
     arrange(Functional_group) %>%
     filter(Functional_group != "immune") %>%
