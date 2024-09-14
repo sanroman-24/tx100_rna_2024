@@ -13,7 +13,8 @@ library(ggthemes)
 BASE <- here::here()
 META_DIR <- file.path(BASE, "data", "meta")
 FIG_DIR <- file.path(BASE, "analysis", "figures")
-TD_MAT_PATH <- file.path(BASE, "analysis", "outputs", "ITED_matrix.rds")
+OUT_DIR <- file.path(BASE, "analysis", "outputs")
+TD_MAT_PATH <- file.path(OUT_DIR, "ITED_matrix.rds")
 CLONES_PATH <- file.path(META_DIR, "clones_annotation.txt")
 ANNOTATION_PATH <- file.path(BASE, "data", "meta", "tx_annotation.tsv")
 
@@ -82,6 +83,8 @@ for (pat in unique(clones_annotation$patient)) {
   }
 }
 
+write_delim(clonal_dist_df, file.path(OUT_DIR, "td_clonal_distance.tsv"), delim = "\t")
+
 # PLOT ASSOCIATION TRANSCRIPTIONAL AND CLONAL DISTANCE --------------------
 clonal_dist_df$dist <- as.character(clonal_dist_df$clonal_dist)
 p <- violin_plot(
@@ -94,6 +97,7 @@ p <- violin_plot(
 )
 
 save_ggplot(p, file.path(FIG_DIR, "Fig2C_td_clonaldist"), w = 75, h = 45)
+
 # Run LME to control for inclusion mulitple pairs from same patient
 summary(
   run_lme(

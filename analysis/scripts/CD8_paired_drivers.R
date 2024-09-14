@@ -70,3 +70,23 @@ save_plist(plist,
     w = 150, h = 150, ncol = 2
 )
 
+plist <- lapply(drivers, function(driver) {
+    tme[[driver]] <- ifelse(tme[[driver]] == 2, 1, tme[[driver]])
+    sub_tme_df <- find_subclonal_alteration(tme, driver)
+    sub_tme_df <- dplyr::select(sub_tme_df, c("sample", "Patient", driver, "T_cells_CD8"))
+    sub_tme_df[[driver]] <- ifelse(sub_tme_df[[driver]] == 0, "WT", "Mutant")
+    p <- df_to_ggpaired(
+        df = sub_tme_df, pat_var = "Patient",
+        cond = driver, var_str = "Purity"
+    ) %>%
+        plot_paired_boxplot(
+            cond1 = "WT", cond2 = "Mutant",
+            ylab = "CD8 T cells",
+            xlab = "", ylim = c(NA)
+        )
+    p = p + ggtitle(driver)
+    # save_ggplot(p,
+    #     file.path(FIG_DIR, paste0("paired_", driver, "_T_CD8")),
+    #     w = 80, h = 80
+    # )
+})

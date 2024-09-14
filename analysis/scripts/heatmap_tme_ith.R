@@ -59,10 +59,11 @@ tme <- tme %>%
     as.matrix() %>%
     scale()
 
+colnames(tme) <- str_replace_all(colnames(tme), "_"," ")
 # CONSTRUCT HEATMAP -----------------------------------------------------
 ht <- Heatmap(t(tme),
     name = "Row Z-Scores",
-    col = circlize::colorRamp2(c(-2, 0, 2), c("darkblue", "white", "darkred")),
+    col = circlize::colorRamp2(c(-2, 0, 2), c(tx_palette[["darkblue"]], "white", tx_palette[["darkred"]])),
     column_dend_reorder = FALSE,
     clustering_distance_columns = "manhattan",
     clustering_method_columns = "complete", clustering_method_rows = "complete",
@@ -168,9 +169,10 @@ rownames(matrix_annotation) <- unique(all_patients)
 
 # define colours to use in oncoprint
 col <- c(
-    "hot" = "darkred", "cold" = "darkblue", "intermediate" = "salmon1",
-    "heterogeneous" = "mediumvioletred", "homogeneous_cold" = "darkblue",
-    "homogeneous_hot" = "darkred", "homogeneous_intermediate" = "salmon1"
+    "hot" = tx_palette[["darkred"]], "cold" = tx_palette[["darkblue"]], 
+    "intermediate" = tx_palette[["lightpurple"]],
+    "heterogeneous" = tx_palette[["darkpurple"]], "homogeneous_cold" = tx_palette[["darkblue"]],
+    "homogeneous_hot" = tx_palette[["darkred"]], "homogeneous_intermediate" = tx_palette[["lightpurple"]]
 )
 
 # define alter function for oncoprint. Cells full size, except for connection
@@ -178,7 +180,7 @@ col <- c(
 alter_fun <- list(
     background = function(x, y, w, h) {
         grid.rect(x, y, w, h,
-            gp = gpar(fill = "grey90", col = NA)
+            gp = gpar(fill = "grey99", col = NA)
         )
     },
     # hot
@@ -317,7 +319,7 @@ ht2 <- oncoPrint(matrix_annotation2,
     column_order = column_order(ht),
     row_order = 1:nrow(matrix_annotation), show_pct = FALSE,
     row_names_gp = gpar(fontsize = 0),
-    name = "annotation", height = unit(60, "mm"), width = unit(50, "mm")
+    name = "annotation", height = unit(30, "mm"), width = unit(50, "mm")
 )
 
 png(file.path(PLOT_DIR, "Fig4A_ITH_immune_heatmap.png"),
@@ -328,7 +330,7 @@ dev.off()
 
 
 pdf(file.path(PLOT_DIR, "Fig4A_ITH_immune_heatmap.pdf"),
-    width = 180 / 25.4, height = 100 / 25.4
+    width = 180 / 25.4, height = 80 / 25.4
 )
 ht %v% ht2
 dev.off()

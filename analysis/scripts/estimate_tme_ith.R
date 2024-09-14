@@ -92,25 +92,26 @@ tme_ith_pairs_df <- tme_ith_pairs_df %>%
     mutate(patient_ord = fct_reorder(patient, t_d))
 
 p <- ggplot(tme_ith_pairs_df, aes(x = patient_ord, y = t_d)) +
-    geom_point(alpha = 0.3, col = "lightblue") +
+    geom_point(alpha = 0.3, col = tx_palette[["lightblue"]]) +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 p <- p +
     geom_point(
         data = summary_tme_ith,
-        aes(x = patient, y = max_tme_ith), shape = 15, col = "orchid", alpha = 0.5
+        aes(x = patient, y = max_tme_ith), shape = 15, col = tx_palette[["lightpurple"]], alpha = 0.5
     ) +
     geom_point(
         data = summary_tme_ith,
-        aes(x = patient, y = min_tme_ith), shape = 15, col = "orchid", alpha = 0.5
+        aes(x = patient, y = min_tme_ith), shape = 15, col = tx_palette[["lightpurple"]], alpha = 0.5
     ) +
     geom_point(
         data = summary_tme_ith,
-        aes(x = patient, y = median_tme_ith), shape = 23, col = "black", fill = "blueviolet"
+        aes(x = patient, y = median_tme_ith), shape = 23, col = "black", fill = tx_palette[["darkpurple"]]
     ) +
-    labs(x = "", y = "Transcriptional distance") +
-    theme(axis.text.x = element_text(size = 8))
+    labs(x = "", y = "TME ITH") +
+    theme(axis.text.x = element_text(size = 5), axis.title.y = element_text(size = 8))
+
 
 p <- change_axes(p)
 
-save_ggplot(p, file.path(PLOT_DIR, "SuppFigX_tme_ith_primary"), w = 180, h = 70)
+save_ggplot(p, file.path(PLOT_DIR, "SuppFigX_tme_ith_primary"), w = 100, h = 70)

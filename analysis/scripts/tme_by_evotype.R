@@ -66,6 +66,7 @@ out <- out %>%
     rownames_to_column(var = "immune_cell") %>%
     reshape2::melt(value.name = "signif")
 
+out$is_sig <- abs(out$signif) > (-log10(0.05))
 out <- mutate(out, signif = case_when(
     signif > 3 ~ 3,
     signif < -3 ~ -3,
@@ -73,7 +74,7 @@ out <- mutate(out, signif = case_when(
 ))
 
 # plot considering all the values
-p = plot_tile(out, "immune_cell", "variable", "signif", lgd = "yes")
+p = plot_tile(out, "immune_cell", "variable", "signif", lgd = "yes", sig = "is_sig")
 # Change to a more sensible order
 p = p + scale_y_discrete(
         expand = c(0, 0),
@@ -90,7 +91,7 @@ save_ggplot(p, file.path(PLOT_DIR, "Fig4E_immune_evotypes"), w = 130, h = 60)
 
 
 # no legend
-p = plot_tile(out, "immune_cell", "variable", "signif", lgd = "no")
+p = plot_tile(out, "immune_cell", "variable", "signif", lgd = "no", sig = "is_sig")
 # Change to a more sensible order
 p = p + scale_y_discrete(
         expand = c(0, 0),

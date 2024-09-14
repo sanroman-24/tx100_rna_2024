@@ -4,3 +4,5 @@
 .Ruserdata
 tmp/
 data/raw/ext/
+analysis/figures/driver_comparison/
+analysis/figures/review/

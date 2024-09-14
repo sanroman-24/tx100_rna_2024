@@ -59,7 +59,7 @@ keep_patients <- annotation %>%
 keep_samples <- annotation[annotation$Patient %in% keep_patients, "sample"] %>%
   as_vector()
 
-annotation_ <- annotation[annotation$sample %in% keep_samples, ]
+annotation <- annotation[annotation$sample %in% keep_samples, ]
 vst <- vst[ ,colnames(vst) %in% keep_samples]
 vst = assay(vst)
 
@@ -90,18 +90,19 @@ ited_pairs_df$patient = factor(ited_pairs_df$patient)
 ited_pairs_df = ited_pairs_df %>% mutate(patient_ord = fct_reorder(patient, t_d))
 
 p = ggplot(ited_pairs_df, aes(x = patient_ord, y = t_d)) + 
-  geom_point(alpha = 0.3, col = "lightblue") + 
+  geom_point(alpha = 0.3, col = tx_palette[["lightblue"]]) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
 
 p = p + 
-  geom_point(data = summary_ited, aes(x = patient, y = max_ited), shape = 15, col = "orchid", alpha = 0.5) + 
-  geom_point(data = summary_ited, aes(x = patient, y = min_ited), shape = 15, col = "orchid", alpha = 0.5) + 
-  geom_point(data = summary_ited, aes(x = patient, y = median_ited), shape = 23, col = "black", fill = "blueviolet") + 
-  labs(x = "", y = "Transcriptional distance") + 
-  theme(axis.text.x = element_text(size = 8))
+  geom_point(data = summary_ited, aes(x = patient, y = max_ited), shape = 15, col = tx_palette[["lightpurple"]], alpha = 0.5) + 
+  geom_point(data = summary_ited, aes(x = patient, y = min_ited), shape = 15, col = tx_palette[["lightpurple"]], alpha = 0.5) + 
+  geom_point(data = summary_ited, aes(x = patient, y = median_ited), shape = 23, col = "black", fill = tx_palette[["darkpurple"]]) + 
+  labs(x = "", y = "Transcriptional distance (I-TED)") + 
+  theme(axis.text.x = element_text(size = 5), axis.title.y = element_text(size = 8))
 
 p = change_axes(p)
 
-save_ggplot(p, file.path(PLOT_DIR, "Fig1B_Transcriptional_ITED_primary"), w = 180, h = 70)
+save_ggplot(p, file.path(PLOT_DIR, "Fig1B_Transcriptional_ITED_primary"), w = 100, h = 70)
+
 
 

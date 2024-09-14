@@ -78,6 +78,8 @@ for (pat in unique(clones_annotation$patient)) {
 
 clonal_dist_df$dist <- as.character(clonal_dist_df$clonal_dist)
 
+write_delim(clonal_dist_df, file.path(OUT_DIR, "tcr_bcr_clonal_distances.tsv"), delim = "\t")
+
 # For TCR
 p <- violin_plot(
     df = clonal_dist_df, x_str = "dist",

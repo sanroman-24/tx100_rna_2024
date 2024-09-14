@@ -6,7 +6,9 @@ library(ggpubr)
 library(survminer)
 library(gridExtra)
 
-scatter_plot <- function(df, x_str, y_str, y_title, x_title, fill = NA) {
+source("src/plotting_theme.R")
+
+scatter_plot <- function(df, x_str, y_str, y_title, x_title, fill = NA, add_smooth = F) {
   if (is.na(fill)) {
     p <- ggplot(df, aes_string(x = x_str, y = y_str)) +
       geom_point(pch = 21, size = 2, fill = "grey40") +
@@ -15,17 +17,27 @@ scatter_plot <- function(df, x_str, y_str, y_title, x_title, fill = NA) {
         y = y_title,
         x = x_title
       )
-    return(p)
-  }
-  p <- ggplot(df, aes_string(x = x_str, y = y_str)) +
+  } else {
+    p <- ggplot(df, aes_string(x = x_str, y = y_str)) +
     geom_point(pch = 21, size = 2, aes_string(fill)) +
     coord_capped_cart(bottom = "none", left = "none") +
     labs(
       y = y_title,
       x = x_title
     )
+  }
+  if (add_smooth){
+    p <- p + geom_smooth(method = "lm")
+  }
   return(p)
 }
+
+scatter_cor <- function(df, x_str, y_str, y_title, x_title, fill = NA, add_smooth = T, method = "spearman"){
+  p <- scatter_plot(df, x_str, y_str, y_title, x_title, fill, add_smooth)
+  p <- p + ggpubr::stat_cor(method = method)
+  return(p)
+}
+
 
 violin_plot <- function(
     df, x_str, y_str, y_title,
@@ -141,9 +153,9 @@ plot_paired_boxplot <- function(df, cond1, cond2, ylab, xlab, ylim) {
   return(p)
 }
 
-plot_tile <- function(df, x_str, y_str, fill_str, lgd) {
+plot_tile <- function(df, x_str, y_str, fill_str, lgd, sig = NULL) {
   p <- ggplot(df, aes_string(y = y_str, x = x_str, fill = fill_str)) +
-    geom_tile(col = "black", size = .5) +
+    geom_tile(col = "black", size = .25) +
     labs(x = "", y = "", fill = "-log 10 (pval) * sign(effect)") +
     scale_fill_gradient2(
       low = "blue", high = "red", mid = "white",
@@ -155,6 +167,13 @@ plot_tile <- function(df, x_str, y_str, fill_str, lgd) {
     ) +
     theme(line = element_blank()) +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+  if (length(sig) > 0){
+    sig_df <- df[df[[sig]],]
+    p <- p + geom_tile(
+      data = sig_df, 
+      aes_string(y = y_str, x = x_str), 
+      fill = NA, col = "black", size = .75)
+  }
   if (lgd == "no") {
     p <- p + theme(legend.position = "none")
   }
@@ -217,5 +236,13 @@ plot_perc_variation <- function(af) {
     geom_col(col = "black") +
     labs(y = "", x = "Explained variance of I-TED (%) ") +
     lemon::coord_capped_cart(bottom = "left", left = "both") +
-    scale_fill_manual(values = c("FALSE" = "grey80", "TRUE" = "coral"))
+    scale_fill_manual(values = c("FALSE" = "grey80", "TRUE" = tx_palette[["lightblue"]]))
+}
+
+pval_to_asterisks <- function(pval) {
+  ifelse(pval < 0.001, "***",
+    ifelse(pval < 0.01, "**",
+      ifelse(pval < 0.05, "*", "")
+    )
+  )
 }

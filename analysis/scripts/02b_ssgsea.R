@@ -27,7 +27,7 @@ all_sign <- readRDS(GS_PATH)
 
 # RUN SSGSEA --------------------------------------------------------------
 # Tumour samples
-ssGSEA <- gsva(expr = tum_tpm, gset.idx.list = all_sign, method = "ssgsea") %>%
+ssGSEA <- gsva(ssgseaParam(tum_tpm, all_sign,"ssgsea")) %>%
   # transverse to get different signatures in the columns
   t() %>%
   # transform to dataframe so that results can be easily merged to sample annotation
@@ -40,7 +40,7 @@ write_delim(ssGSEA, file.path(OUT_DIR, "tx_ssGSEA.tsv"), delim = "\t")
 
 # subset only to normals to run ssGSEA here
 nor_tpm <- tum_nor_tpm[, str_detect(colnames(tum_nor_tpm), "_N")]
-ssGSEA_nor <- gsva(expr = nor_tpm, gset.idx.list = all_sign, method = "ssgsea") %>%
+ssGSEA_nor <- gsva(ssgseaParam(nor_tpm, all_sign)) %>%
   # transverse to get different signatures in the columns
   t() %>%
   # transform to dataframe so that results can be easily merged to sample annotation

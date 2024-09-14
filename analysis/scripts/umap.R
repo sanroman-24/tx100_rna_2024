@@ -92,9 +92,9 @@ p <- umap_df %>%
   theme(legend.position = "none") +
   scale_color_manual(values = c(
     "other" = "grey60",
-    "K390" = "blue",
-    "K243" = "red",
-    "K153" = "orange"
+    "K390" = tx_palette[["darkblue"]],
+    "K243" = tx_palette[["darkred"]],
+    "K153" = tx_palette[["darkpurple"]]
   ))
 p <- change_axes(p)
 

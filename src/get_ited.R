@@ -28,6 +28,7 @@ get_dist_matrix <- function(counts, t, f = "dcor") {
   out <- matrix(NA, nrow = length(samps), ncol = length(samps))
   rownames(out) <- samps
   colnames(out) <- samps
+
   for (pair in 1:ncol(all_pairs)) {
     s1 <- all_pairs[1, pair]
     s2 <- all_pairs[2, pair]
@@ -37,6 +38,37 @@ get_dist_matrix <- function(counts, t, f = "dcor") {
     out[rownames(out) == s1, colnames(out) == s2] <- t_dist
     out[rownames(out) == s2, colnames(out) == s1] <- t_dist
   }
+  return(out)
+}
+
+get_dist_matrix_pl <- function(counts, t, f = "dcor", cores = 4){
+  registerDoMC(cores)
+  samps <- colnames(counts)
+  all_pairs <- combn(colnames(counts), 2)
+  out <- matrix(NA, nrow = length(samps), ncol = length(samps))
+  rownames(out) <- samps
+  colnames(out) <- samps
+
+  l <- foreach(pair=1:ncol(all_pairs), .verbose = T) %dopar% {
+    print(paste0(pair, "/", ncol(all_pairs), "..."))
+    s1 <- all_pairs[1, pair]
+    s2 <- all_pairs[2, pair]
+    c_s1 <- counts[, colnames(counts) == s1]
+    c_s2 <- counts[, colnames(counts) == s2]
+    t_dist <- get_dist(c_s1, c_s2, t, f)
+    # out[rownames(out) == s1, colnames(out) == s2] <- t_dist
+    # out[rownames(out) == s2, colnames(out) == s1] <- t_dist
+    return(t_dist)
+  }
+  t_dist <- unlist(l)
+
+  for (pair in 1:ncol(all_pairs)){
+    s1 <- all_pairs[1, pair]
+    s2 <- all_pairs[2, pair]
+    out[rownames(out) == s1, colnames(out) == s2] <- t_dist[pair]
+    out[rownames(out) == s2, colnames(out) == s1] <- t_dist[pair]
+  }
+
   return(out)
 }
 

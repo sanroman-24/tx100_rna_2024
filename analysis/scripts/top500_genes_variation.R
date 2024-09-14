@@ -32,8 +32,10 @@ source(file.path(BASE, "src", "plotting_functions.R"))
 vst <- assay(vst)
 keep_genes <- (rowMeans(vst > 5) > .2)
 vst <- vst[keep_genes, ] # 16704 genes passed filtering
-top500_genes <- apply(vst, 1, sd) %>%
-    sort(decreasing = TRUE) %>%
+variance_genes <- apply(vst, 1, sd) %>% sort(decreasing = TRUE)
+df <- data.frame(gene = names(variance_genes), sd_tracerx_renal = unname(variance_genes))
+write_delim(df, file.path(OUT_DIR, "ST8_variance_genes.tsv"), delim = "\t")
+top500_genes <- variance_genes %>%
     head(n = 500) %>%
     {
         names(.)

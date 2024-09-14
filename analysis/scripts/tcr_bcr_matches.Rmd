@@ -47,6 +47,14 @@ BCRClonotypes <- readRDS(BCR_CLONES_PATH)
 normalsTCRClonotypes <- readRDS(TCR_CLONES_NORMALS_PATH)
 normalsBCRClonotypes <- readRDS(BCR_CLONES_NORMALS_PATH)
 
+# get supplementary table with all
+tcr_clones <- data.table::rbindlist(c(TCRClonotypes[[1]], normalsTCRClonotypes[[1]]), idcol = "sample")
+tcr_clones$sample <- str_extract(tcr_clones$sample, "K\\d{3}[_-][^-_\\.]+")
+write_delim(tcr_clones, file.path(OUT_DIR, "ST_TCR_clones.tsv"), delim = "\t")
+
+bcr_clones <- data.table::rbindlist(c(BCRClonotypes[[1]], normalsBCRClonotypes[[1]]), idcol = "sample")
+bcr_clones$sample <- str_extract(bcr_clones$sample, "K\\d{3}[_-][^-_\\.]+")
+write_delim(bcr_clones, file.path(OUT_DIR, "ST_BCR_clones.tsv"), delim = "\t")
 
 # exclude all the samples that corresponds to patients with one single sample analysed
 patients <- str_extract(names(TCRClonotypes$data), "K\\d{3}")

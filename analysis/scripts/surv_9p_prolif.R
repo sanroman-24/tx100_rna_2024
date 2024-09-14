@@ -23,8 +23,22 @@ CLINICAL_ANNOTATION_PATH <- file.path(META_DIR, "TRACERx_s1_1_clinical.txt")
 SSGSEA_PATH <- file.path(BASE, "data", "processed", "tx_ssGSEA.tsv")
 HALLMARK_GROUPS_PATH <- file.path(META_DIR, "martinez_ruiz_2023_hallmark_gs_groups.txt")
 
+# FUNCTIONS ----------------------------------------------------------------
 source(file.path(BASE, "src", "plotting_theme.R"))
 source(file.path(BASE, "src", "plotting_functions.R"))
+
+get_p_comp <- function(grp1, grp2, surv_end, df, gr_var) {
+    df <- df[df[[gr_var]] %in% c(grp1, grp2), ]
+    df$gr <- df[[gr_var]]
+    if (surv_end == "OS") {
+        return(summary(coxph(Surv(os_time, os) ~ gr, data = df)))
+    } else if (surv_end == "PFS") {
+        return(summary(coxph(Surv(pfs_time, pfs) ~ gr, data = df)))
+    } else {
+        stop("Please provide valid clinical endpoint")
+    }
+}
+
 # LOAD DATA ---------------------------------------------------------------
 annotation <- read_delim(ANNOTATION_PATH, delim = "\t")
 gene_groups <- read_delim(HALLMARK_GROUPS_PATH)
@@ -42,13 +56,18 @@ annotation <- merge(annotation, ssgsea_scores, "sample")
 
 gene_groups$pathway <- paste0("HALLMARK_", str_to_upper(gene_groups$Hallmark))
 pf_paths <- gene_groups$pathway[gene_groups$Functional_group == "proliferation"]
+ifn_paths <- c("HALLMARK_INTERFERON_ALPHA_RESPONSE", "HALLMARK_INTERFERON_GAMMA_RESPONSE")
 
 scores <- annotation %>%
-    dplyr::select(Patient, pf_paths) %>%
+    dplyr::select(Patient, pf_paths, ifn_paths) %>%
     group_by(Patient) %>%
     summarise_all(max) %>%
     {
-        cbind(.[, 1], data.frame(proliferation = rowMeans(.[, -1])))
+        cbind(
+            .[, 1],
+            data.frame(proliferation = rowMeans(.[, pf_paths])),
+            ifn = rowMeans(.[, ifn_paths])
+        )
     }
 
 # Add information on status 9p loss
@@ -77,6 +96,7 @@ scores <- scores %>% mutate(group = case_when(
     !high_proliferation & !loss_9p ~ "9p WT + low proliferation",
 ))
 
+write_delim(scores, file.path(OUT_DIR, "surv_9p_ssgsea_scores.tsv"), delim = "\t")
 
 ### SURVIVAL ANALYSIS
 # PFS
@@ -104,7 +124,45 @@ save_baseplot(km_plot, file.path(FIG_DIR, "SupFig13_9p_loss_prolif_os"),
 )
 
 
+get_p_comp(
+    "9p loss + high proliferation", "9p loss + low proliferation",
+    "OS", scores, "group"
+)
+
+get_p_comp(
+    "9p loss + high proliferation", "9p loss + low proliferation",
+    "PFS", scores, "group"
+)
+
+get_p_comp(
+    "9p loss + low proliferation", "9p WT + low proliferation",
+    "OS", scores, "group"
+)
+
+get_p_comp(
+    "9p loss + low proliferation", "9p WT + low proliferation",
+    "PFS", scores, "group"
+)
+
+
 # Check upon correction by stage
 scores$stage_simple <- ifelse(scores$`Overall Stage` %in% c("I", "II"), "I-II", "III-IV")
 coxph(Surv(pfs_time, pfs) ~ loss_9p:high_proliferation + stage_simple, data = scores)
 coxph(Surv(os_time, pfs) ~ proliferation + stage_simple, data = scores[scores$loss_9p > 0, ])
+coxph(Surv(os_time, pfs) ~ proliferation + stage_simple, data = scores[scores$loss_9p == 0, ])
+
+
+# # 9p loss status
+# hd_9p <- read_delim("tmp/9p_status.csv")
+# hd_9p$Patient <- str_remove(hd_9p$Patient, "_.+")
+# pts <- scores$Patient[scores$group == "9p loss + high proliferation"] 
+# sapply(pts, function(pt){
+#     if (any(hd_9p$status_9p[hd_9p$Patient == pt] == "HD")){
+#         return("HD")
+#     } else if (any(hd_9p$status_9p[hd_9p$Patient == pt] == "LOH")){
+#         return("LOH")
+#     } else {
+#         return("WT")
+#     }
+# })
+

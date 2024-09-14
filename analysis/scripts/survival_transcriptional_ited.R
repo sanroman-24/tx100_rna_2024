@@ -8,7 +8,8 @@ rm(list = ls(all = TRUE))
 library(tidyverse)
 library(survival)
 library(survminer)
-
+library(gridExtra)
+library(grid)
 
 # PATHS -------------------------------------------------------------------
 
@@ -41,24 +42,23 @@ iteds_df = merge(iteds_df, clinical_data, by = "Subject") %>%
   mutate(pfs = ifelse(`PFS (months)` == "-", 0, 1)) %>% 
   mutate(pfs_time = as.numeric(ifelse(`PFS (months)` == "-", `Total follow up (months)`, `PFS (months)`))) %>% 
   mutate(OS = ifelse(Outcome == "Death", 1, 0)) %>% 
-  mutate(OS_time =  as.numeric(`Total follow up (months)`))
+  mutate(OS_time =  as.numeric(`Total follow up (months)`)) %>% 
+  mutate(Stage = ifelse(`Overall Stage` %in% c("I", "II"), "I-II", "III-IV"))
 
 # PFS KM
-iteds_df$high_ited = iteds_df$ited > median(iteds_df$ited)
-km_fit <- survfit(Surv(pfs_time, pfs) ~ high_ited, 
+iteds_df$ITED = ifelse(iteds_df$ited > median(iteds_df$ited), "High I-TED", "Low I-TED") 
+km_fit <- survfit(Surv(pfs_time, pfs) ~ ITED, 
                   data=iteds_df)
 
-km_plot <- plot_km(iteds_df, km_fit, plt = c("black", "orange"))
+km_plot1 <- plot_km(iteds_df, km_fit, plt = c(tx_palette[["darkred"]], "grey50"))
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "Fig1F_transcriptional_ited_PFS"), h = 90, w = 70)
+save_baseplot(km_plot1, file.path(PLOT_DIR, "Fig1F_transcriptional_ited_PFS"), h = 90, w = 70)
 
 # OS KM
-km_fit <- survfit(Surv(OS_time, OS) ~ high_ited, 
+km_fit <- survfit(Surv(OS_time, OS) ~ ITED, 
                   data=iteds_df)
 
-km_plot <- plot_km(iteds_df, km_fit, plt = c("black", "orange"))
+km_plot2 <- plot_km(iteds_df, km_fit, plt = c(tx_palette[["darkred"]], "grey50"))
 
-save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFig7_transcriptional_ited_OS"), h = 90, w = 70)
+save_baseplot(km_plot2, file.path(PLOT_DIR, "SuppFig7_transcriptional_ited_OS"), h = 90, w = 70)
 
-# Cox regression
-coxph(Surv(OS_time, OS) ~ ited, data=iteds_df)

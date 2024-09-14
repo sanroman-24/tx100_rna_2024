@@ -68,6 +68,7 @@ clones_annotation$clonal_age <-
         calculate_clonal_age(clones_annotation, pt, clone_id, 0)
     })
 
+write_delim(clones_annotation, file.path(OUT_DIR, "clones_annotation_with_distance_mrca.tsv"), delim = "\t")
 # COMPARE ALL THE SSGSEA --------------------------------------------------
 
 ssgsea <- t(ssgsea) %>%
@@ -117,7 +118,7 @@ p = df_to_ggpaired(
         ) %>%
             plot_paired_boxplot(
                 cond1 = "No terminal", cond2 = "Terminal",
-                ylab = sign, xlab = "", ylim = c(NA)
+                ylab = "Motzer T effector", xlab = "", ylim = c(NA)
             )
 
 save_ggplot(p, file.path(FIG_DIR, "Fig4D_T_eff"), w = 45, h = 45)
@@ -128,7 +129,7 @@ p = df_to_ggpaired(
         ) %>%
             plot_paired_boxplot(
                 cond1 = "No terminal", cond2 = "Terminal",
-                ylab = sign, xlab = "", ylim = c(NA)
+                ylab = "Motzer Myeloid Inflammation", xlab = "", ylim = c(NA)
             )
 
 save_ggplot(p, file.path(FIG_DIR, "Fig4D_myeloid"), w = 45, h = 45)
@@ -169,11 +170,17 @@ ssgsea_difs_df <- ssgsea_difs_df %>%
     summarise(p_value = hmp.stat(p_value), t_value = mean(t_value)) %>%
     mutate(signif = (p_value <= .05))
 
+ssgsea_difs_df <- ssgsea_difs_df %>% 
+    mutate(Functional_group = str_replace_all(Functional_group, "_", " ")) %>% 
+    mutate(Functional_group = str_to_title(Functional_group)) %>% 
+    mutate(Functional_group = str_replace(Functional_group, "Dna", "DNA"))
+
 p <- plot_lolli(
     df = ssgsea_difs_df, x_str = "t_value",
     y_str = "Functional_group", fill_str = "signif",
-    fill_manual = c("TRUE" = "coral", "FALSE" = "grey80"),
+    fill_manual = c("TRUE" = tx_palette[["lightred"]], "FALSE" = "grey80"),
     xlim = c(-2, 2)
 )
 
-save_ggplot(p, file.path(FIG_DIR, "Fig2E_ssgsea_early_late_lolli"), w = 50, h = 45)
+p <- p + labs(x = "t value in LME (Early > Late)", y = "Functional group")
+save_ggplot(p, file.path(FIG_DIR, "Fig2E_ssgsea_early_late_lolli"), w = 90, h = 45)

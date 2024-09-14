@@ -61,23 +61,24 @@ tme_ith_df <- merge(tme_ith_df, clinical_data, by = "Subject") %>%
   mutate(OS_time = as.numeric(`Total follow up (months)`))
 
 # PFS KM
-tme_ith_df$high_ited <- tme_ith_df$ited > median(tme_ith_df$ited)
-km_fit <- survfit(Surv(pfs_time, pfs) ~ high_ited,
+
+tme_ith_df$ITED = ifelse(tme_ith_df$ited > median(tme_ith_df$ited), "High I-TED", "Low I-TED") 
+km_fit <- survfit(Surv(pfs_time, pfs) ~ ITED,
   data = tme_ith_df
 )
 
-km_plot <- plot_km(tme_ith_df, km_fit, plt = c("black", "orange"))
+km_plot <- plot_km(tme_ith_df, km_fit, plt = c(tx_palette[["darkred"]], "grey50"))
 
 save_baseplot(km_plot, file.path(PLOT_DIR, "Fig4C_tme_ith_PFS"), h = 90, w = 70)
 
 # OS KM
-km_fit <- survfit(Surv(OS_time, OS) ~ high_ited,
+km_fit <- survfit(Surv(OS_time, OS) ~ ITED,
   data = tme_ith_df
 )
 
-km_plot <- plot_km(tme_ith_df, km_fit, plt = c("black", "orange"))
+km_plot <- plot_km(tme_ith_df, km_fit, plt = c(tx_palette[["darkred"]], "grey50"))
 
-# save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFigXX_tme_ith_OS"), h = 90, w = 70)
+save_baseplot(km_plot, file.path(PLOT_DIR, "SuppFigXX_tme_ith_OS"), h = 90, w = 70)
 
 # Cox regression
 coxph(Surv(OS_time, OS) ~ ited, data = tme_ith_df)

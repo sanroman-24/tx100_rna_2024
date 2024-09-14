@@ -1,6 +1,43 @@
 library(nlme)
 library(dplyr)
 
+# little wrapper to quickly clean IDs in the annotation to match IDs when they have only _
+clean_ids <- function(ids){
+  ids %>%
+  str_replace("K328R19", "K328-R19") %>%
+  str_replace("-", "_") %>%
+  str_replace("K328_T1", "K328_THR1") %>%
+  str_replace("K245_T1", "K245_THR1")
+}
+
+get_pt <- function(smp){
+  return(str_extract(smp, "K\\d{3}"))
+}
+
+get_gene_coordinates <- function(hgnc_genes, filt_chr = T, filt_dup = T){
+  m <- useMart('ensembl', dataset='hsapiens_gene_ensembl') 
+  df <- getBM(mart=m, attributes=c('hgnc_symbol', 'chromosome_name',
+                                   'start_position', 'end_position'),
+            filters='hgnc_symbol', values=hgnc_genes) 
+  if (filt_chr){
+    df <- df[df$chromosome %in% 1:22,]
+  }
+  if (filt_dup){
+    df <- df[!duplicated(df$hgnc_symbol),]
+  }
+  return(df)
+}
+
+# from ID like R1d1xx1 or R4dna1xx1, get only R1 or R4
+cnid2smp <- function(pt, ids){
+    smps <- sapply(ids, function(id){
+        e <- str_locate(id, "\\d+")[1,2]
+        smp <- str_sub(id, 1, e)
+        return(paste0(pt, "_", smp))
+    })
+    return(smps)
+}
+
 # Returns linear-mixed effect model with variables contained in dataframe
 #' @param Y string with name of dependent variable
 #' @param X string with the name of independent variable(s)
