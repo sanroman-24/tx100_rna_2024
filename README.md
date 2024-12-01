@@ -19,7 +19,7 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Main          | 1a              | [analysis/scripts/umap.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/umap.R)|
 | Main          | 1b             | None, manually using graphical design software. Mock scatter plots generated in [src/td_mock_example.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/src/td_mock_example.R)|
 | Main          | 1c              | [analysis/scripts/estimate_transcriptional_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/estimate_transcriptional_ited.R)|
-| Main          | 1d              | [analysis/scripts/correlates_prim_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/correlates_primary_ited.R)|
+| Main          | 1d              | [analysis/scripts/correlates_primary_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/correlates_primary_ited.R)|
 | Main          | 1e              | None, manually using graphical design software |
 | Main          | 1f              | [analysis/scripts/eqtl_td.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/eqtl_td.R)|
 | Main          | 2a              | [analysis/scripts/td_prim_norm.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/td_prim_norm.R)|
@@ -59,7 +59,7 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | 3a             | None, manually using graphical design software. Mock scatter plots generated in [src/td_mock_example.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/src/td_mock_example.R)|
 | Supplementary          | 3b             |[analysis/scripts/ited_top500_vs_all.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/ited_top500_vs_all.R) |
 | Supplementary          | 4             | [analysis/scripts/survival_transcriptional_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/survival_transcriptional_ited.R)|
-| Supplementary          | 5a             | [analysis/scripts/correlates_prim_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/correlates_primary_ited.R)|
+| Supplementary          | 5a             | [analysis/scripts/correlates_primary_ited.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/correlates_primary_ited.R)|
 | Supplementary          | 5b             | [analysis/scripts/eqtl_td.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/eqtl_td.R)|
 | Supplementary          | 6             | [analysis/scripts/eqtl_td.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/eqtl_td.R)|
 | Supplementary          | 7             | [analysis/scripts/td_prim_norm.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/td_prim_norm.R)|
