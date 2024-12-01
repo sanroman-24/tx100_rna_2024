@@ -5,6 +5,7 @@
 tmp/
 data/raw/ext/
 analysis/figures/
+analysis/outputs/review/
 analysis/figures/driver_comparison/
 analysis/figures/review/
 publication_documments/
