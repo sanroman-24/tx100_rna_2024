@@ -81,7 +81,7 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | 21b             | [analysis/scripts/tme_dist_vs_clonal_dist.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/tme_dist_vs_clonal_dist.R)|
 | Supplementary          | 21c,d             | [analysis/scripts/survival_tme_ith.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/survival_tme_ith.R)|
 | Supplementary          | 22a             | [analysis/scripts/tme_transitions.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/tme_transitions.R)|
-| Supplementary          | 22b             | [analysis/scripts/ssgsea_early_late.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/ssgsea_early_late.R)|
+| Supplementary          | 22b             | [analysis/scripts/ssgsea_early_late_purity.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/ssgsea_early_late_purity.R)|
 | Supplementary          | 22c,d             | [analysis/scripts/paired_ssgsea_driver.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/paired_ssgsea_driver.R)|
 | Supplementary          | 23             | [analysis/scripts/CD8_paired_drivers.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/CD8_paired_drivers.R)|
 | Supplementary          | 24             | [analysis/scripts/TCR_BCR_similarity_survival.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/TCR_BCR_similarity_survival.R)|
@@ -96,7 +96,7 @@ The table below explicitly lists which code reproduces each figure in the manusc
 | Supplementary          | Table 2        | [analysis/scripts/normal_prim_ssgsea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/normal_prim_ssgsea.R)|
 | Supplementary          | Table 3        | [analysis/scripts/prim_met_ssgsea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/prim_met_ssgsea.R)|
 | Supplementary          | Table 4        | [data/meta/martinez_ruiz_2023_hallmark_gs_groups.txt](https://github.com/sanroman-24/tx100_rna_2024/blob/main/data/meta/martinez_ruiz_2023_hallmark_gs_groups.txt). Obtained from [Martínez-Ruiz et al, Nature 2023](https://www.nature.com/articles/s41586-023-05706-4#Sec8) |
-| Supplementary          | Table 5        | [analysis/scripts/ssgsea_early_late.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/ssgsea_early_late.R)|
+| Supplementary          | Table 5        | [analysis/scripts/ssgsea_early_late_purity.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/ssgsea_early_late_purity.R)|
 | Supplementary          | Table 6        | [analysis/scripts/cgas_dea.R](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/cgas_dea.R)|
 | Supplementary          | Table 7        | [analysis/scripts/tcr_bcr_matches.Rmd](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/tcr_bcr_matches.Rmd)|
 | Supplementary          | Table 8        | [analysis/scripts/tcr_bcr_matches.Rmd](https://github.com/sanroman-24/tx100_rna_2024/blob/main/analysis/scripts/tcr_bcr_matches.Rmd)|
