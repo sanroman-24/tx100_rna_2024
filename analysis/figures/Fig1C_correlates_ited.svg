@@ -24,61 +24,49 @@
 <rect x='0.000000000000016' y='0.00' width='199.21' height='128.06' style='stroke-width: 0.58; stroke: none; fill: #FFFFFF;' />
 </g>
 <defs>
-  <clipPath id='cpNTkuNTN8MTk2LjIyfDIuOTl8MTA4LjMy'>
-    <rect x='59.53' y='2.99' width='136.69' height='105.33' />
+  <clipPath id='cpMTA3LjU5fDE5Ni4yMnwyLjk5fDEwOC4zMg=='>
+    <rect x='107.59' y='2.99' width='88.63' height='105.33' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNTkuNTN8MTk2LjIyfDIuOTl8MTA4LjMy)'>
-<rect x='59.53' y='2.99' width='136.69' height='105.33' style='stroke-width: 0.58; stroke: none; fill: #FFFFFF;' />
-<rect x='65.75' y='98.44' width='0.62' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='65.75' y='89.04' width='1.36' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='65.75' y='79.63' width='4.68' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='65.75' y='70.23' width='5.89' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='65.75' y='60.83' width='16.07' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='65.75' y='51.42' width='19.38' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='65.75' y='42.02' width='91.62' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #7F7F7F;' />
-<rect x='65.75' y='32.61' width='98.98' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #7F7F7F;' />
-<rect x='65.75' y='23.21' width='102.77' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #7F7F7F;' />
-<rect x='65.75' y='13.80' width='118.71' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #7F7F7F;' />
-<rect x='65.75' y='4.40' width='124.26' height='8.46' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #7F7F7F;' />
+<g clip-path='url(#cpMTA3LjU5fDE5Ni4yMnwyLjk5fDEwOC4zMg==)'>
+<rect x='107.59' y='2.99' width='88.63' height='105.33' style='stroke-width: 0.58; stroke: none; fill: #FFFFFF;' />
+<rect x='111.62' y='96.30' width='0.35' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='111.62' y='84.85' width='0.77' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='111.62' y='73.40' width='2.64' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='111.62' y='61.95' width='10.95' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='111.62' y='50.50' width='13.07' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='111.62' y='39.05' width='34.50' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #A3C6E8;' />
+<rect x='111.62' y='27.60' width='51.76' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #A3C6E8;' />
+<rect x='111.62' y='16.15' width='58.05' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #A3C6E8;' />
+<rect x='111.62' y='4.71' width='80.57' height='10.30' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #A3C6E8;' />
 </g>
 <g clip-path='url(#cpMC4wMHwxOTkuMjF8MC4wMHwxMjguMDY=)'>
-<polyline points='59.53,102.68 59.53,8.63 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<text x='55.50' y='104.86' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='20.89px' lengthAdjust='spacingAndGlyphs'>pur_ith</text>
-<text x='55.50' y='95.46' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='11.62px' lengthAdjust='spacingAndGlyphs'>size</text>
-<text x='55.50' y='86.05' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='23.66px' lengthAdjust='spacingAndGlyphs'>Regions</text>
-<text x='55.50' y='76.65' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='42.95px' lengthAdjust='spacingAndGlyphs'>subclonal_14q</text>
-<text x='55.50' y='67.24' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='44.03px' lengthAdjust='spacingAndGlyphs'>subclonal_wgd</text>
-<text x='55.50' y='57.84' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='17.33px' lengthAdjust='spacingAndGlyphs'>Stage</text>
-<text x='55.50' y='48.43' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='45.40px' lengthAdjust='spacingAndGlyphs'>subclonal_scna</text>
-<text x='55.50' y='39.03' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='31.58px' lengthAdjust='spacingAndGlyphs'>PBRM1_alt</text>
-<text x='55.50' y='29.63' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='32.20px' lengthAdjust='spacingAndGlyphs'>ITH_scaled</text>
-<text x='55.50' y='20.22' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='39.13px' lengthAdjust='spacingAndGlyphs'>subclonal_9p</text>
-<text x='55.50' y='10.82' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='30.38px' lengthAdjust='spacingAndGlyphs'>SETD2_alt</text>
-<polyline points='56.70,102.68 59.53,102.68 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,93.27 59.53,93.27 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,83.87 59.53,83.87 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,74.46 59.53,74.46 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,65.06 59.53,65.06 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,55.65 59.53,55.65 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,46.25 59.53,46.25 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,36.84 59.53,36.84 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,27.44 59.53,27.44 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,18.04 59.53,18.04 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='56.70,8.63 59.53,8.63 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='65.75,108.32 194.85,108.32 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<polyline points='65.75,111.15 65.75,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='91.28,111.15 91.28,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='116.80,111.15 116.80,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='142.33,111.15 142.33,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='167.86,111.15 167.86,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<polyline points='193.39,111.15 193.39,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
-<text x='65.75' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='9.54px' lengthAdjust='spacingAndGlyphs'>0.0</text>
-<text x='91.28' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='9.54px' lengthAdjust='spacingAndGlyphs'>2.5</text>
-<text x='116.80' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='9.54px' lengthAdjust='spacingAndGlyphs'>5.0</text>
-<text x='142.33' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='9.54px' lengthAdjust='spacingAndGlyphs'>7.5</text>
-<text x='167.86' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='13.36px' lengthAdjust='spacingAndGlyphs'>10.0</text>
-<text x='193.39' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='13.36px' lengthAdjust='spacingAndGlyphs'>12.5</text>
-<text x='127.88' y='123.83' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='96.41px' lengthAdjust='spacingAndGlyphs'>Explained variance of I-TED (%) </text>
+<polyline points='107.59,101.45 107.59,9.86 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<text x='103.56' y='103.63' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='29.19px' lengthAdjust='spacingAndGlyphs'>Purity ITH</text>
+<text x='103.56' y='92.18' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='12.30px' lengthAdjust='spacingAndGlyphs'>Size</text>
+<text x='103.56' y='80.74' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='23.66px' lengthAdjust='spacingAndGlyphs'>Regions</text>
+<text x='103.56' y='69.29' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='17.33px' lengthAdjust='spacingAndGlyphs'>Stage</text>
+<text x='103.56' y='57.84' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='56.03px' lengthAdjust='spacingAndGlyphs'>Subclonal 14q loss</text>
+<text x='103.56' y='46.39' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='93.46px' lengthAdjust='spacingAndGlyphs'>Subclonal epigenetic alteration</text>
+<text x='103.56' y='34.94' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='92.68px' lengthAdjust='spacingAndGlyphs'>% Genome with subclonal CNA</text>
+<text x='103.56' y='23.49' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='34.99px' lengthAdjust='spacingAndGlyphs'>Genetic ITH</text>
+<text x='103.56' y='12.04' text-anchor='end' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='52.21px' lengthAdjust='spacingAndGlyphs'>Subclonal 9p loss</text>
+<polyline points='104.76,101.45 107.59,101.45 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,90.00 107.59,90.00 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,78.55 107.59,78.55 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,67.10 107.59,67.10 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,55.65 107.59,55.65 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,44.20 107.59,44.20 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,32.76 107.59,32.76 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,21.31 107.59,21.31 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='104.76,9.86 107.59,9.86 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='111.62,108.32 195.33,108.32 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
+<polyline points='111.62,111.15 111.62,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='140.46,111.15 140.46,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='169.30,111.15 169.30,108.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='111.62' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='3.82px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='140.46' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='3.82px' lengthAdjust='spacingAndGlyphs'>5</text>
+<text x='169.30' y='116.72' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "DejaVu Sans";' textLength='7.63px' lengthAdjust='spacingAndGlyphs'>10</text>
+<text x='151.91' y='123.83' text-anchor='middle' style='font-size: 6.00px; font-family: "DejaVu Sans";' textLength='96.41px' lengthAdjust='spacingAndGlyphs'>Explained variance of I-TED (%) </text>
 </g>
 </svg>

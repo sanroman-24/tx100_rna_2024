@@ -78,6 +78,7 @@ drivers <- c("loss_9p", "loss_14q", "SETD2", "PBRM1")
 
 ssgsea_difs_df <- data.frame(gene = c(), pathway = c(), avg_dif = c(), p_val = c())
 
+
 for (driver in drivers) {
     ssgsea[[driver]] <- ifelse(ssgsea[[driver]] == 2, 1, ssgsea[[driver]])
     sub_ssgsea_df <- find_subclonal_alteration(ssgsea, driver)

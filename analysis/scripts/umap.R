@@ -27,18 +27,6 @@ VST_PATH <- file.path(BASE, "data", "processed", "tum_vst_exp_filtered.rds")
 source(file.path(BASE, "src", "plotting_theme.R"))
 source(file.path(BASE, "src", "plotting_functions.R"))
 
-euclidean_dist <- function(x1, y1, x2, y2) {
-  return(sqrt((x1 - x2)^2 + (y1 - y2)^2))
-}
-
-calculate_dist_umap <- function(s1, s2, umap_df) {
-  x1 <- umap_df[umap_df$sample == s1, ]$UMAP1
-  y1 <- umap_df[umap_df$sample == s1, ]$UMAP2
-  x2 <- umap_df[umap_df$sample == s2, ]$UMAP1
-  y2 <- umap_df[umap_df$sample == s2, ]$UMAP2
-  return(euclidean_dist(x1, y1, x2, y2))
-}
-
 # LOAD DATA ---------------------------------------------------------------
 annotation <- read_delim(ANNOTATION_PATH, delim = "\t")
 vst <- read_rds(VST_PATH)
