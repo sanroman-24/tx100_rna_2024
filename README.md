@@ -6,8 +6,6 @@ This repository contains all the code and data necessary to reproduce the result
 
 Running the scripts in [analysis/scripts](https://github.com/sanroman-24/tx100_rna_2024/tree/main/analysis/scripts) reproduces all the analyses in the manuscript, with the exception of single-cell RNA-Seq results, for which data availability is controlled by corresponding authors. Helper functions are located in [src](https://github.com/sanroman-24/tx100_rna_2024/tree/main/src). Input, intermediate and output data are provided, so that each script is runnable without the need to run previous scripts. 
 
-*Extensive analyses included during the last round of review are included in [analysis/scripts]*
-
 We provide below an index of what scripts reproduce the different figures and tables in the manuscript.
 
 ## Linking code to manuscript figures (main and supplementary) and tables
